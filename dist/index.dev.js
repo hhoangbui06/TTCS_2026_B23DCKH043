@@ -4,6 +4,10 @@ var express = require('express');
 
 var app = express();
 
+var database = require('./config/database.js');
+
+database.connect();
+
 require('dotenv').config();
 
 var port = process.env.PORT;

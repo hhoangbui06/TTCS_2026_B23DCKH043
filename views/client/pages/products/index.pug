@@ -6,14 +6,15 @@ block main
         .row
             .col-12
                 .box-head
-                    +box-head("Danh sách sản phẩm")
+                    +box-head("Danh sách")
         .row
-            .col-4.mb-3
-                .product-item
-                    .inner-image
-                        img(src="https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp", alt="iPhone 9")
-                    .inner-content
-                        h3.inner-title iPhone 9
-                         .inner-price-new 80$
-                         .inner-price-old 100$
-                         .inner-discount -20%
+            -for (let product of products)
+                .col-4.mb-3
+                    .product-item
+                        .inner-image
+                            img(src=product.thumbnail, alt=product.description)
+                        .inner-content
+                            h3.inner-title #{product.title}
+                            .inner-price-new #{product.priceNew}$
+                            .inner-price-old #{product.price}$
+                            .inner-discount -#{product.discountPercentage}%
