@@ -1,16 +1,22 @@
 const express=require('express');
 const app=express();
+
 const database=require('./config/database.js')
 database.connect()
+
 require('dotenv').config();
 const port=process.env.PORT;
 
-const route=require("./routes/client/index-route.js")
+const routeClient=require("./routes/client/index-route.js")
+const routeAdmin=require('./routes/admin/index-route.js')
 
+const systemConfig=require('./config/system.js');
+app.locals.prefixAdmin=systemConfig.prefixAdmin;
 app.set('views', './views');
 app.set('view engine', 'pug');
 app.use(express.static("public"));
-route(app)
+routeClient(app)
+routeAdmin(app)
 
 app.listen(port, ()=>{
     console.log(`Welcome port ${port}`);

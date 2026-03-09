@@ -1,0 +1,40 @@
+extends ../../layouts/default.pug
+
+block main
+    h1 Product Page
+
+    .card.mb-3
+        .card-header Bộ lọc và tìm kiếm
+            .card-body
+                -for(let item of filterStatus)
+                    button(class=`btn btn-sm ml-1 btn-outline-success ${item.status}` button-status=item.check) #{item.name}
+    .card.mb-3
+        .card-header Bộ lọc và tìm kiếm
+            .card-body
+                table.table.table-hover.table-sm
+                    thead
+                        tr
+                            th STT
+                            th Hình ảnh
+                            th Tiêu đề
+                            th Giá
+                            th Trạng thái
+                            th Hành động
+                    -let index=1
+                    tbody                               
+                        -for(let product of products)
+                            tr
+                                td #{index++}
+                                td
+                                    img(src=product.thumbnail
+                                        alt=product.description
+                                        width="100px"
+                                        height="auto"
+                                    )
+                                td #{product.title}
+                                td #{product.priceNew}$
+                                td
+                                    a(href="#" class=product.badge) #{product.stt}
+                                td
+                                    button(class="btn btn-warning btn-sm") Sửa
+                                    button(class="btn btn-danger btn-sm ml-1") Xóa
