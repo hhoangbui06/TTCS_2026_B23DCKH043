@@ -1,0 +1,15 @@
+mixin pagination(objectPagination)
+    nav
+            ul(class="pagination")
+                li(class="page-item")
+                    button(class="page-link",button-pagination=1,disabled=objectPagination.currentPage==1) &lt;&lt;
+                li(class="page-item")    
+                    button(class="page-link",button-pagination=objectPagination.currentPage>1?objectPagination.currentPage-1:1,disabled=objectPagination.currentPage==1) &lt;
+                -for(let idxPage=1; idxPage<=objectPagination.pageNumber; idxPage++)
+                    li(class=`page-item ${objectPagination.currentPage==idxPage?"active":""}`)
+                        button(class="page-link" button-pagination=idxPage) #{idxPage}
+                
+                li(class="page-item")
+                    button(class="page-link",button-pagination=objectPagination.currentPage<objectPagination.pageNumber?objectPagination.currentPage+1:objectPagination.pageNumber,disabled=objectPagination.currentPage==objectPagination.pageNumber) &gt;
+                li(class="page-item")    
+                    button(class="page-link",button-pagination=objectPagination.pageNumber,disabled=objectPagination.currentPage==objectPagination.pageNumber) &gt;&gt;

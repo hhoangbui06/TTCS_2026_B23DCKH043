@@ -1,44 +1,33 @@
-const data=require('../../models/product-model')
-module.exports.index=async (req,res)=>{
-    let filterStatus=[
-        {
-            name:"Tất cả",
-            status:"",
-            check:"",
-        },
-        {
-            name:"Hoạt động",
-            status:"",
-            check:"active"
-        },
-        {
-            name:"Dừng hoạt động",
-            status:"",
-            check:"inactive"
-        }
-    ]
-    let find={
-        delete:false
-    }
-    for (let key in req.query){
-        let value=req.query[key]
-        if (value) find[key]=req.query[key]
-    }
-    let queryStatus=req.query.status||""
-    for (let stt of filterStatus){
-        if (stt.check==queryStatus){
-            stt.status="active"
-        }
-        else{
-            stt.status=""
-        }
-    }
+const data = require('../../models/product-model')
+const filterStatusHelper = require('../../helpers/filterStatus-helper')
+const searchHelper = require('../../helpers/search-helper')
+const pagination=require('../../helpers/pagination-helper')
 
-    const products=await data.find(find);
-    products.forEach(item=>{
-        item.priceNew=Math.round(item.price*(100-item.discountPercentage)/100);
-        item.badge=item.status=="inactive"?"badge badge-danger":"badge badge-success";
-        item.stt=item.badge==="badge badge-danger"?"Không hoạt động":"Hoạt động";
+module.exports.index = async (req, res) => {
+    let filterStatus = filterStatusHelper(req.query)
+    let find = {
+        deleted: false
+    }
+    if (req.query.status) {
+        let value = req.query.status;
+        find["status"] = value
+    }
+    let search = searchHelper(req.query)
+    if (search.keyword) find.title = search.title
+    const count = await data.countDocuments(find)
+
+    let objectPagination = {
+        currentPage: 1,
+        limitItems: 4,
+        totalProduct:count
+    }
+    pagination(objectPagination,req.query, find)
+    const products = await data.find(find).skip(objectPagination.skipItems).limit(objectPagination.limitItems);
+    console.log(objectPagination.totalProduct, objectPagination.pageNumber)
+    products.forEach(item => {
+        item.priceNew = Math.round(item.price * (100 - item.discountPercentage) / 100);
+        item.badge = item.status == "inactive" ? "badge badge-danger" : "badge badge-success";
+        item.stt = item.badge === "badge badge-danger" ? "Không hoạt động" : "Hoạt động";
     })
-    res.render('admin/pages/products/index.pug', {title:"Product", products:products, filterStatus:filterStatus})
+    res.render('admin/pages/products/index.pug', { title: "Product", products: products, filterStatus: filterStatus, keyword: search.keyword, objectPagination: objectPagination })
 }

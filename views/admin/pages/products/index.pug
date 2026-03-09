@@ -1,13 +1,18 @@
 extends ../../layouts/default.pug
-
+include ../../mixins/filter-status.pug
+include ../../mixins/form-search.pug
+include ../../mixins/pagination.pug
 block main
     h1 Product Page
 
     .card.mb-3
         .card-header Bộ lọc và tìm kiếm
-            .card-body
-                -for(let item of filterStatus)
-                    button(class=`btn btn-sm ml-1 btn-outline-success ${item.status}` button-status=item.check) #{item.name}
+        .card-body
+            .row
+                .col-6
+                    + filter-status(filterStatus)
+                .col-6
+                    +form-search("form-search",keyword)
     .card.mb-3
         .card-header Bộ lọc và tìm kiếm
             .card-body
@@ -38,3 +43,4 @@ block main
                                 td
                                     button(class="btn btn-warning btn-sm") Sửa
                                     button(class="btn btn-danger btn-sm ml-1") Xóa
+    +pagination(objectPagination)
