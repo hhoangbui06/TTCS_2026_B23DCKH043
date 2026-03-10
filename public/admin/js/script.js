@@ -1,4 +1,6 @@
 let buttons=document.querySelectorAll("button[button-status]")
+console.log("OKscript")
+console.log(buttons)
 let url=new URL(window.location.href)
 for (let button of buttons){
     button.addEventListener("click", ()=>{
@@ -7,12 +9,14 @@ for (let button of buttons){
         if (!status){
             url.searchParams.delete("status")
         }
+        console.log("OK")
+        console.log(window.location.href)
         window.location.href=url.href
     })
 }
 
-let form=document.querySelector("#form-search")
-form.addEventListener("submit", (e)=>{
+let formSearch=document.querySelector("#form-search")
+formSearch.addEventListener("submit", (e)=>{
     e.preventDefault();
     const keyword=e.target.elements.keyword.value;
     console.log(keyword)

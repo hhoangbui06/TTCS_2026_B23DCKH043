@@ -3,6 +3,7 @@ const filterStatusHelper = require('../../helpers/filterStatus-helper')
 const searchHelper = require('../../helpers/search-helper')
 const pagination=require('../../helpers/pagination-helper')
 
+
 module.exports.index = async (req, res) => {
     let filterStatus = filterStatusHelper(req.query)
     let find = {
@@ -23,11 +24,14 @@ module.exports.index = async (req, res) => {
     }
     pagination(objectPagination,req.query, find)
     const products = await data.find(find).skip(objectPagination.skipItems).limit(objectPagination.limitItems);
-    console.log(objectPagination.totalProduct, objectPagination.pageNumber)
     products.forEach(item => {
         item.priceNew = Math.round(item.price * (100 - item.discountPercentage) / 100);
         item.badge = item.status == "inactive" ? "badge badge-danger" : "badge badge-success";
         item.stt = item.badge === "badge badge-danger" ? "Không hoạt động" : "Hoạt động";
     })
     res.render('admin/pages/products/index.pug', { title: "Product", products: products, filterStatus: filterStatus, keyword: search.keyword, objectPagination: objectPagination })
+}
+module.exports.changeStatus=async (req,res)=>{
+    await data.updateOne({_id:req.params.id}, {status:req.params.status})
+    res.redirect(req.headers.referer)
 }

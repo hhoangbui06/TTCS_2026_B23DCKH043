@@ -3,7 +3,7 @@ module.exports.index=async (req,res)=>{
     console.log("Product controller running");
     const products=await product.find({
         status:'active',
-        delete:false
+        deleted:false
     });
     products.forEach(item=>{
         item.priceNew=Math.round(item.price*(100-item.discountPercentage)/100)
