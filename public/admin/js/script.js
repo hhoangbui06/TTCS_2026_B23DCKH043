@@ -35,3 +35,33 @@ for (let button of buttonPages){
         window.location.href=url.href        
     })
 }
+
+let checkAll=document.querySelector("input[name='checkall']")
+let checkSingle=document.querySelectorAll("input[name='id']")
+checkAll.addEventListener("click", ()=>{
+    for (let checkbox of checkSingle){
+        if (checkAll.checked) checkbox.checked=true
+        else checkbox.checked=false
+    }
+})
+for (let checkbox of checkSingle){
+    checkbox.addEventListener("click", ()=>{
+        let checkedCount=document.querySelectorAll("input[name='id']:checked")
+        if (checkedCount.length===checkSingle.length) checkAll.checked=true
+        else checkAll.checked=false;
+        // console.log(checkbox.value)
+    })
+}
+
+let formChangeMulti=document.querySelector("[form-change-multi]")
+formChangeMulti.addEventListener("submit", (e)=>{
+    // e.preventDefault()
+    let buttonChecked=document.querySelectorAll("input[name='id']:checked");
+    let ids=[]
+    for (let button of buttonChecked){
+        console.log(button.value)
+        ids.push(button.value)
+    }
+    let inputIds=formChangeMulti.querySelector("input[name='ids']")
+    inputIds.value=ids.join(",")
+})

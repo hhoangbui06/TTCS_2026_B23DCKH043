@@ -35,3 +35,21 @@ module.exports.changeStatus=async (req,res)=>{
     await data.updateOne({_id:req.params.id}, {status:req.params.status})
     res.redirect(req.headers.referer)
 }
+
+module.exports.changeMulti=async (req,res)=>{
+    let ids=req.body.ids.split(",");
+    let type=req.body.type;
+    switch(type){
+        case "active":
+            await data.updateMany({_id:{$in:ids}} , {status:"active"});
+            break;
+        case "inactive":
+            await data.updateMany({_id:{$in:ids}}, {status:"inactive"});
+            break;
+        default:
+            break;
+        
+
+    }
+    res.redirect(req.headers.referer)
+}
