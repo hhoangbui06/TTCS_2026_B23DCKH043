@@ -11,7 +11,7 @@ block main
         .card-body
             .row
                 .col-6
-                    + filter-status(filterStatus)
+                    +filter-status(filterStatus)
                 .col-6
                     +form-search("form-search",keyword)
     .card.mb-3
@@ -56,13 +56,19 @@ block main
                                       button-change-status
                                     ) #{product.stt}
                                 td
-                                    button(class="btn btn-warning btn-sm") Sửa
-                                    button(class="btn btn-danger btn-sm ml-1") Xóa
+                                    button(class="btn btn-warning btn-sm" data-id=product.id) Sửa
+                                    button(class="btn btn-danger btn-sm ml-1" data-id=product._id button-delete) Xóa
     +pagination(objectPagination)
     form(
         action=""
         method="POST"
         id="form-change-status"
         data-path=`${prefixAdmin}/products/change-status`
+    )
+    form(
+        action=""
+        method="POST"
+        id="form-delete-item"
+        data-path=`${prefixAdmin}/products/delete`
     )
     script(src="/admin/js/product.js")

@@ -9,7 +9,7 @@ const productSchema=new mongoose.Schema({
     thumbnail:String,
     status:String,
     position:Number,
-    delete:Boolean
+    deleted:Boolean
 })
 const products=mongoose.model("products", productSchema)
 module.exports=products
