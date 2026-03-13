@@ -5,4 +5,4 @@ module.exports = async(objectPagination, query) => {
     }
     else objectPagination.currentPage=1;
     objectPagination.skipItems = (objectPagination.currentPage - 1) * objectPagination.limitItems
-}
+} 

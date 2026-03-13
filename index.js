@@ -4,6 +4,14 @@ const app=express();
 const methodOverride=require('method-override')
 app.use(methodOverride('_method'))
 
+const cookieParser=require('cookie-parser')
+const session=require('express-session')
+const flash=require('express-flash');
+app.use(cookieParser('hhoangbui'));
+app.use(session({cookie:{maxAge:60000}}));
+app.use(flash())
+
+
 const database=require('./config/database.js')
 database.connect()
 const bodyParser=require('body-parser')
