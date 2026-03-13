@@ -36,3 +36,7 @@ for (let button of buttonPages){
     })
 }
 
+let btnRecovery=document.querySelector("#recovery")
+btnRecovery.addEventListener("click", (e)=>{
+    window.location.href=e.target.dataset.path;
+})

@@ -32,32 +32,41 @@ let formChangeMulti = document.querySelector("[form-change-multi]")
 formChangeMulti.addEventListener("submit", (e) => {
     // e.preventDefault()
     let buttonChecked = document.querySelectorAll("input[name='id']:checked");
+    let typeChange = e.target.elements.type.value
     if (buttonChecked.length < 1) {
         e.preventDefault()
-        alert("Chọn sản phẩm muốn thay đổi!")}
+        alert("Chọn sản phẩm muốn thay đổi!")
+    }
     else {
+        if (typeChange == "delete-all") {
+            let isConfirm=confirm("Chắc chắn xóa tất cả sản phẩm đã chọn?")
+            if (!isConfirm) e.preventDefault()  
+        }   
         let ids = []
         for (let button of buttonChecked) {
-            console.log(button.value)
-            ids.push(button.value)
+            let tr=button.closest("tr");
+            let setPosition=tr.querySelector("input[name='position']")
+            console.log(setPosition)
+            let idString=button.value
+            if (typeChange="change-position") idString+=`-${setPosition.value}`
+            ids.push(idString)
         }
         let inputIds = formChangeMulti.querySelector("input[name='ids']")
         inputIds.value = ids.join(",")
     }
 })
 
-let formDelete=document.querySelector("#form-delete-item")
+let formDelete = document.querySelector("#form-delete-item")
 console.log(formDelete)
-let pathDelete=formDelete.dataset.path
-let buttonDelete=document.querySelectorAll("button[button-delete]");
-for (let button of buttonDelete){
-    button.addEventListener("click", ()=>{
-        let isConfirm=confirm("Chắc chắn xóa sản phẩm này?")
-        if(isConfirm){
-            let id=button.dataset.id;
-            let action=`${pathDelete}/${id}?_method=DELETE`
-            formDelete.action=action;
-            console.log(formDelete.action)
+let pathDelete = formDelete.dataset.path
+let buttonDelete = document.querySelectorAll("button[button-delete]");
+for (let button of buttonDelete) {
+    button.addEventListener("click", () => {
+        let isConfirm = confirm("Chắc chắn xóa sản phẩm này?")
+        if (isConfirm) {
+            let id = button.dataset.id;
+            let action = `${pathDelete}/${id}?_method=DELETE`
+            formDelete.action = action;
             formDelete.submit()
         }
     })

@@ -3,7 +3,10 @@ const filterStatusHelper = require('../../helpers/filterStatus-helper')
 const searchHelper = require('../../helpers/search-helper')
 const pagination = require('../../helpers/pagination-helper')
 
-
+module.exports.recovery=async(req,res)=>{
+    await data.updateMany({}, {deleted:false})
+    res.redirect(req.headers.referer)
+}
 module.exports.index = async (req, res) => {
     let filterStatus = filterStatusHelper(req.query)
     let find = {
@@ -24,6 +27,7 @@ module.exports.index = async (req, res) => {
     }
     pagination(objectPagination, req.query, find)
     const products = await data.find(find).skip(objectPagination.skipItems).limit(objectPagination.limitItems);
+    products.sort((a,b)=>a.position-b.position)
     products.forEach(item => {
         item.priceNew = Math.round(item.price * (100 - item.discountPercentage) / 100);
         item.badge = item.status == "inactive" ? "badge badge-danger" : "badge badge-success";
@@ -37,7 +41,13 @@ module.exports.changeStatus = async (req, res) => {
 }
 
 module.exports.changeMulti = async (req, res) => {
-    let ids = req.body.ids.split(",");
+    let tmp = req.body.ids.split(',');
+    let ids=[], pos=[];
+    for (let x of tmp){
+        let check=x.split('-');
+        ids.push(check[0]);
+        pos.push(check[1])
+    }
     if (ids.length) {
         let type = req.body.type;
         switch (type) {
@@ -46,6 +56,13 @@ module.exports.changeMulti = async (req, res) => {
                 break;
             case "inactive":
                 await data.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+                break;
+            case "delete-all":
+                await data.updateMany({_id:{$in:ids}}, {deleted:true, deletedAt:new Date()})
+            case "change-position":
+                for (let i =0; i<ids.length; i++){
+                    await data.updateOne({_id:ids[i]}, {position:pos[i]})
+                }
                 break;
             default:
                 break;
@@ -59,7 +76,8 @@ module.exports.changeMulti = async (req, res) => {
 module.exports.deleteProduct = async (req, res) => {
     let id = req.params.id;
     // res.send(id)
-    await data.updateOne({ _id: id }, { deleted: true })
+    // await data.updateMany({}, {deleted:false})
+    await data.updateOne({ _id: id }, { deleted: true, deletedAt:new Date()})
     res.redirect(req.headers.referer)
     // console.log(result)
 }
