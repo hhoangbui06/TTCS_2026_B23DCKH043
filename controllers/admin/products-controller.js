@@ -2,7 +2,9 @@ const data = require('../../models/product-model')
 const filterStatusHelper = require('../../helpers/filterStatus-helper')
 const searchHelper = require('../../helpers/search-helper')
 const pagination = require('../../helpers/pagination-helper')
+const systemConfig=require('../../config/system')
 
+const prefixAdmin=systemConfig.prefixAdmin;
 module.exports.recovery=async(req,res)=>{
     await data.updateMany({}, {deleted:false})
     res.redirect(req.headers.referer)
@@ -88,4 +90,22 @@ module.exports.deleteProduct = async (req, res) => {
     await data.updateOne({ _id: id }, { deleted: true, deletedAt:new Date()})
     res.redirect(req.headers.referer)
     // console.log(result)
+}
+
+module.exports.create=(req,res)=>{
+    res.render('admin/pages/products/create.pug', {title:"Tạo mới sản phẩm"})
+}
+module.exports.createItem=async(req,res)=>{
+    req.body.price=Number(req.body.price)
+    req.body.discountPercentage=Number(req.body.discountPercentage)
+    req.body.stock=Number(req.body.stock)
+    if(req.body.position===""){
+        let count=await data.countDocuments();
+        req.body.position=count+1;
+    }
+    else req.body.position=Number(req.body.position)
+    req.body.thumbnail=`/uploads/${req.file.filename}`
+    let newProduct=new data(req.body);
+    await newProduct.save();
+    res.redirect(`${prefixAdmin}/products/create`)
 }

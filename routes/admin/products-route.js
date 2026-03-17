@@ -2,6 +2,10 @@ const express=require('express')
 const router=express.Router();
 const controller=require('../../controllers/admin/products-controller')
 
+const storageMulter=require('../../helpers/storage-multer-helper')
+const multer=require('multer')
+const upload=multer({storage:storageMulter()})
+
 // [GET] /admin/
 module.exports=router.get('/', controller.index)
 // [PATCH] /admin/products/change-status/:status(active,inactive)/:id
@@ -12,3 +16,7 @@ module.exports=router.patch('/change-multi', controller.changeMulti)
 module.exports=router.delete('/delete/:id', controller.deleteProduct)
 //[GET] /admin/products/recovery
 module.exports=router.get('/recovery', controller.recovery)
+// [GET]/admin/products/create
+module.exports=router.get('/create', controller.create)
+// [POST] /admin/products/create
+module.exports=router.post('/create',upload.single('thumbnail'), controller.createItem)

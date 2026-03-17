@@ -1,24 +1,27 @@
 let formChange = document.querySelector("#form-change-status");
 let badges = document.querySelectorAll("a[button-change-status]")
-
+if (formChange){
 let pathChange = formChange.dataset.path;
+if (badges){
 for (let badge of badges) {
     badge.addEventListener("click", () => {
         let id = badge.dataset.id, currentStatus = badge.dataset.status;
         let newStatus = currentStatus == "inactive" ? "active" : "inactive"
         formChange.action = `${pathChange}/${newStatus}/${id}?_method=PATCH`
         formChange.submit()
-    })
-}
+    })}
+}}
 
 let checkAll = document.querySelector("input[name='checkall']")
 let checkSingle = document.querySelectorAll("input[name='id']")
+if (checkAll){
 checkAll.addEventListener("click", () => {
     for (let checkbox of checkSingle) {
         if (checkAll.checked) checkbox.checked = true
         else checkbox.checked = false
     }
-})
+})}
+if (checkAll && checkSingle){
 for (let checkbox of checkSingle) {
     checkbox.addEventListener("click", () => {
         let checkedCount = document.querySelectorAll("input[name='id']:checked")
@@ -27,8 +30,9 @@ for (let checkbox of checkSingle) {
         // console.log(checkbox.value)
     })
 }
-
+}
 let formChangeMulti = document.querySelector("[form-change-multi]")
+if (formChangeMulti){
 formChangeMulti.addEventListener("submit", (e) => {
     // e.preventDefault()
     let buttonChecked = document.querySelectorAll("input[name='id']:checked");
@@ -54,10 +58,10 @@ formChangeMulti.addEventListener("submit", (e) => {
         let inputIds = formChangeMulti.querySelector("input[name='ids']")
         inputIds.value = ids.join(",")
     }
-})
+})}
 
 let formDelete = document.querySelector("#form-delete-item")
-console.log(formDelete)
+if (formDelete){
 let pathDelete = formDelete.dataset.path
 let buttonDelete = document.querySelectorAll("button[button-delete]");
 for (let button of buttonDelete) {
@@ -70,4 +74,4 @@ for (let button of buttonDelete) {
             formDelete.submit()
         }
     })
-}
+}}

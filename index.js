@@ -14,8 +14,10 @@ app.use(flash())
 
 const database=require('./config/database.js')
 database.connect()
+
 const bodyParser=require('body-parser')
 app.use(bodyParser.urlencoded({extended:false}))
+
 require('dotenv').config();
 const port=process.env.PORT;
 
