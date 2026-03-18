@@ -2,11 +2,11 @@ const data = require('../../models/product-model')
 const filterStatusHelper = require('../../helpers/filterStatus-helper')
 const searchHelper = require('../../helpers/search-helper')
 const pagination = require('../../helpers/pagination-helper')
-const systemConfig=require('../../config/system')
+const systemConfig = require('../../config/system')
 
-const prefixAdmin=systemConfig.prefixAdmin;
-module.exports.recovery=async(req,res)=>{
-    await data.updateMany({}, {deleted:false})
+const prefixAdmin = systemConfig.prefixAdmin;
+module.exports.recovery = async (req, res) => {
+    await data.updateMany({}, { deleted: false })
     res.redirect(req.headers.referer)
 }
 module.exports.index = async (req, res) => {
@@ -29,7 +29,7 @@ module.exports.index = async (req, res) => {
     }
     pagination(objectPagination, req.query, find)
     const products = await data.find(find).skip(objectPagination.skipItems).limit(objectPagination.limitItems);
-    products.sort((a,b)=>a.position-b.position)
+    products.sort((a, b) => a.position - b.position)
     products.forEach(item => {
         item.priceNew = Math.round(item.price * (100 - item.discountPercentage) / 100);
         item.badge = item.status == "inactive" ? "badge badge-danger" : "badge badge-success";
@@ -45,9 +45,9 @@ module.exports.changeStatus = async (req, res) => {
 
 module.exports.changeMulti = async (req, res) => {
     let tmp = req.body.ids.split(',');
-    let ids=[], pos=[];
-    for (let x of tmp){
-        let check=x.split('-');
+    let ids = [], pos = [];
+    for (let x of tmp) {
+        let check = x.split('-');
         ids.push(check[0]);
         pos.push(check[1])
     }
@@ -63,13 +63,13 @@ module.exports.changeMulti = async (req, res) => {
                 req.flash('success', `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm!`)
                 break;
             case "delete-all":
-                await data.updateMany({_id:{$in:ids}}, {deleted:true, deletedAt:new Date()})
+                await data.updateMany({ _id: { $in: ids } }, { deleted: true, deletedAt: new Date() })
                 req.flash('success', `Đã xóa thành công ${ids.length} sản phẩm!`)
                 break;
 
             case "change-position":
-                for (let i =0; i<ids.length; i++){
-                    await data.updateOne({_id:ids[i]}, {position:pos[i]})
+                for (let i = 0; i < ids.length; i++) {
+                    await data.updateOne({ _id: ids[i] }, { position: pos[i] })
                 }
                 req.flash('success', `Đã cập nhật thành công vị trí của ${ids.length} sản phẩm!`)
 
@@ -87,25 +87,48 @@ module.exports.deleteProduct = async (req, res) => {
     let id = req.params.id;
     // res.send(id)
     // await data.updateMany({}, {deleted:false})
-    await data.updateOne({ _id: id }, { deleted: true, deletedAt:new Date()})
+    await data.updateOne({ _id: id }, { deleted: true, deletedAt: new Date() })
     res.redirect(req.headers.referer)
     // console.log(result)
 }
 
-module.exports.create=(req,res)=>{
-    res.render('admin/pages/products/create.pug', {title:"Tạo mới sản phẩm"})
+module.exports.create = (req, res) => {
+    res.render('admin/pages/products/create.pug', { title: "Tạo mới sản phẩm" })
 }
-module.exports.createItem=async(req,res)=>{
-    req.body.price=Number(req.body.price)
-    req.body.discountPercentage=Number(req.body.discountPercentage)
-    req.body.stock=Number(req.body.stock)
-    if(req.body.position===""){
-        let count=await data.countDocuments();
-        req.body.position=count+1;
+module.exports.createItem = async (req, res) => {
+
+    req.body.price = Number(req.body.price)
+    req.body.discountPercentage = Number(req.body.discountPercentage)
+    req.body.stock = Number(req.body.stock)
+    if (req.body.position === "") {
+        let count = await data.countDocuments();
+        req.body.position = count + 1;
     }
-    else req.body.position=Number(req.body.position)
-    req.body.thumbnail=`/uploads/${req.file.filename}`
-    let newProduct=new data(req.body);
+    else req.body.position = Number(req.body.position)
+    if (req.file) req.body.thumbnail = `/uploads/${req.file.filename}`
+    let newProduct = new data(req.body);
     await newProduct.save();
+    req.flash('success', 'Đã thêm mới sản phẩm!')
     res.redirect(`${prefixAdmin}/products/create`)
+}
+
+module.exports.editItem = async (req, res) => {
+    let editProduct = await data.findOne({ _id: req.params.id, deleted: false })
+    res.render('admin/pages/products/edit.pug', { product: editProduct, title: "Chỉnh sửa sản phẩm" })
+}
+module.exports.editProduct = async (req, res) => {
+    try {
+        let id = req.params.id;
+        req.body.price = Number(req.body.price)
+        req.body.discountPercentage = Number(req.body.discountPercentage)
+        req.body.stock = Number(req.body.stock)
+        req.body.position = Number(req.body.position)
+        if (req.file) req.body.thumbnail = req.file.filename
+        await data.updateOne({ _id: id }, req.body)
+        req.flash('success', 'Cập nhật sản phẩm thành công!')
+    }
+    catch (err) {
+        res.flash('error', 'Cập nhật thất bại!')
+    }
+    res.redirect(req.headers.referer)
 }

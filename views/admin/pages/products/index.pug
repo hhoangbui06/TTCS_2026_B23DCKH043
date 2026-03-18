@@ -76,7 +76,10 @@ block main
                                       button-change-status
                                     ) #{product.stt}
                                 td
-                                    button(class="btn btn-warning btn-sm" data-id=product.id) Sửa
+                                    a(
+                                        href=`${prefixAdmin}/products/edit/${product._id}`
+                                        class="btn btn-warning btn-sm" data-id=product._id
+                                    ) Sửa
                                     button(class="btn btn-danger btn-sm ml-1" data-id=product._id button-delete) Xóa
     +pagination(objectPagination)
     form(

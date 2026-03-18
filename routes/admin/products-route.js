@@ -6,6 +6,8 @@ const storageMulter=require('../../helpers/storage-multer-helper')
 const multer=require('multer')
 const upload=multer({storage:storageMulter()})
 
+const validate=require('../../validate/admin/product-validate')
+
 // [GET] /admin/
 module.exports=router.get('/', controller.index)
 // [PATCH] /admin/products/change-status/:status(active,inactive)/:id
@@ -19,4 +21,7 @@ module.exports=router.get('/recovery', controller.recovery)
 // [GET]/admin/products/create
 module.exports=router.get('/create', controller.create)
 // [POST] /admin/products/create
-module.exports=router.post('/create',upload.single('thumbnail'), controller.createItem)
+module.exports=router.post('/create',upload.single('thumbnail'), validate.createItem ,controller.createItem)
+
+module.exports=router.get('/edit/:id', controller.editItem) 
+module.exports=router.patch('/edit/:id', upload.single('thumbnail'), controller.editProduct)
