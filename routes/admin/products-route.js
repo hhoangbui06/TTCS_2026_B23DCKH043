@@ -24,4 +24,5 @@ module.exports=router.get('/create', controller.create)
 module.exports=router.post('/create',upload.single('thumbnail'), validate.createItem ,controller.createItem)
 
 module.exports=router.get('/edit/:id', controller.editItem) 
-module.exports=router.patch('/edit/:id', upload.single('thumbnail'), controller.editProduct)
+module.exports=router.patch('/edit/:id', upload.single('thumbnail'), validate.createItem, controller.editProduct)
+module.exports=router.get('/detail/:id', controller.detailItem)

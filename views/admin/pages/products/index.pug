@@ -77,6 +77,10 @@ block main
                                     ) #{product.stt}
                                 td
                                     a(
+                                        href=`${prefixAdmin}/products/detail/${product._id}`
+                                        class="btn btn-primary btn-sm" data-id=product._id
+                                    ) Chi tiết
+                                    a(
                                         href=`${prefixAdmin}/products/edit/${product._id}`
                                         class="btn btn-warning btn-sm" data-id=product._id
                                     ) Sửa

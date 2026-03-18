@@ -132,3 +132,14 @@ module.exports.editProduct = async (req, res) => {
     }
     res.redirect(req.headers.referer)
 }
+
+module.exports.detailItem=async (req,res)=>{
+    let id=req.params.id;
+    let productDetail=await data.findOne({_id:id, deleted:false})
+    if (productDetail){
+        res.render('admin/pages/products/detail', {product:productDetail})
+    }
+    else{
+        res.redirect(req.headers.referer)
+    }
+}
