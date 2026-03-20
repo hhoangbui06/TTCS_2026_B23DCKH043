@@ -105,7 +105,6 @@ module.exports.createItem = async (req, res) => {
         req.body.position = count + 1;
     }
     else req.body.position = Number(req.body.position)
-    if (req.file) req.body.thumbnail = `/uploads/${req.file.filename}`
     let newProduct = new data(req.body);
     await newProduct.save();
     req.flash('success', 'Đã thêm mới sản phẩm!')}
