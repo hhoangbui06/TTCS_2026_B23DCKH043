@@ -96,7 +96,7 @@ module.exports.create = (req, res) => {
     res.render('admin/pages/products/create.pug', { title: "Tạo mới sản phẩm" })
 }
 module.exports.createItem = async (req, res) => {
-
+    try{
     req.body.price = Number(req.body.price)
     req.body.discountPercentage = Number(req.body.discountPercentage)
     req.body.stock = Number(req.body.stock)
@@ -108,7 +108,10 @@ module.exports.createItem = async (req, res) => {
     if (req.file) req.body.thumbnail = `/uploads/${req.file.filename}`
     let newProduct = new data(req.body);
     await newProduct.save();
-    req.flash('success', 'Đã thêm mới sản phẩm!')
+    req.flash('success', 'Đã thêm mới sản phẩm!')}
+    catch(err){
+        req.flash('error', 'Xảy ra lỗi!')
+    }
     res.redirect(`${prefixAdmin}/products/create`)
 }
 
