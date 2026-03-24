@@ -7,6 +7,7 @@ app.use(methodOverride('_method'))
 const cookieParser=require('cookie-parser')
 const session=require('express-session')
 const flash=require('express-flash');
+const path=require('path')
 app.use(cookieParser('hhoangbui'));
 app.use(session({cookie:{maxAge:60000}}));
 app.use(flash())
@@ -29,6 +30,9 @@ app.locals.prefixAdmin=systemConfig.prefixAdmin;
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'pug');
 app.use(express.static(`${__dirname}/public`));
+
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')))
+
 routeClient(app)
 routeAdmin(app)
 
