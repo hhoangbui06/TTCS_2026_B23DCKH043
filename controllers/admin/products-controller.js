@@ -10,6 +10,10 @@ module.exports.recovery = async (req, res) => {
     res.redirect(req.headers.referer)
 }
 module.exports.index = async (req, res) => {
+    let sortProducts = {};
+    if (req.query.sortKey && req.query.sortValue) {
+        sortProducts[req.query.sortKey] = req.query.sortValue;
+    }
     let filterStatus = filterStatusHelper(req.query)
     let find = {
         deleted: false
@@ -28,14 +32,15 @@ module.exports.index = async (req, res) => {
         totalProduct: count
     }
     pagination(objectPagination, req.query, find)
-    const products = await data.find(find).skip(objectPagination.skipItems).limit(objectPagination.limitItems);
-    products.sort((a, b) => a.position - b.position)
+    const products = await data.find(find).sort(sortProducts).skip(objectPagination.skipItems).limit(objectPagination.limitItems);
     products.forEach(item => {
         item.priceNew = Math.round(item.price * (100 - item.discountPercentage) / 100);
         item.badge = item.status == "inactive" ? "badge badge-danger" : "badge badge-success";
         item.stt = item.badge === "badge badge-danger" ? "Không hoạt động" : "Hoạt động";
     })
-    res.render('admin/pages/products/index.pug', { title: "Product", products: products, filterStatus: filterStatus, keyword: search.keyword, objectPagination: objectPagination })
+    res.render('admin/pages/products/index.pug', {
+        title: "Product", products: products, filterStatus: filterStatus, keyword: search.keyword, objectPagination: objectPagination
+    })
 }
 module.exports.changeStatus = async (req, res) => {
     await data.updateOne({ _id: req.params.id }, { status: req.params.status })
@@ -96,19 +101,20 @@ module.exports.create = (req, res) => {
     res.render('admin/pages/products/create.pug', { title: "Tạo mới sản phẩm" })
 }
 module.exports.createItem = async (req, res) => {
-    try{
-    req.body.price = Number(req.body.price)
-    req.body.discountPercentage = Number(req.body.discountPercentage)
-    req.body.stock = Number(req.body.stock)
-    if (req.body.position === "") {
-        let count = await data.countDocuments();
-        req.body.position = count + 1;
+    try {
+        req.body.price = Number(req.body.price)
+        req.body.discountPercentage = Number(req.body.discountPercentage)
+        req.body.stock = Number(req.body.stock)
+        if (req.body.position === "") {
+            let count = await data.countDocuments();
+            req.body.position = count + 1;
+        }
+        else req.body.position = Number(req.body.position)
+        let newProduct = new data(req.body);
+        await newProduct.save();
+        req.flash('success', 'Đã thêm mới sản phẩm!')
     }
-    else req.body.position = Number(req.body.position)
-    let newProduct = new data(req.body);
-    await newProduct.save();
-    req.flash('success', 'Đã thêm mới sản phẩm!')}
-    catch(err){
+    catch (err) {
         req.flash('error', 'Xảy ra lỗi!')
     }
     res.redirect(`${prefixAdmin}/products/create`)
@@ -135,13 +141,13 @@ module.exports.editProduct = async (req, res) => {
     res.redirect(req.headers.referer)
 }
 
-module.exports.detailItem=async (req,res)=>{
-    let id=req.params.id;
-    let productDetail=await data.findOne({_id:id, deleted:false})
-    if (productDetail){
-        res.render('admin/pages/products/detail', {product:productDetail})
+module.exports.detailItem = async (req, res) => {
+    let id = req.params.id;
+    let productDetail = await data.findOne({ _id: id, deleted: false })
+    if (productDetail) {
+        res.render('admin/pages/products/detail', { product: productDetail })
     }
-    else{
+    else {
         res.redirect(req.headers.referer)
     }
 }

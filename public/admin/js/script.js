@@ -63,7 +63,7 @@ const uploadImage = document.querySelector('[upload-image]')
 if (uploadImage) {
     const uploadImageInput = uploadImage.querySelector('[upload-image-input]');
     const uploadImagePreview = uploadImage.querySelector('[upload-image-preview]');
-    const buttonClearImage=uploadImage.querySelector('#clear-input-image')
+    const buttonClearImage = uploadImage.querySelector('#clear-input-image')
     uploadImageInput.addEventListener('change', (e) => {
         console.log(e)
         buttonClearImage.classList.remove('btn-hidden');
@@ -72,9 +72,39 @@ if (uploadImage) {
             uploadImagePreview.src = URL.createObjectURL(file);
         }
     })
-    buttonClearImage.addEventListener('click', (e)=>{
+    buttonClearImage.addEventListener('click', (e) => {
         e.target.classList.add('btn-hidden');
-        uploadImageInput.value="";
-        uploadImagePreview.src=''
+        uploadImageInput.value = "";
+        uploadImagePreview.src = ''
     })
+}
+
+let sortDiv = document.querySelector("div[sort]")
+console.log("sortDiv")
+console.log(sortDiv)
+if (sortDiv) {
+    let sortSelect = document.querySelector("[sort-select]");
+    if (sortSelect) {
+        sortSelect.addEventListener("change", (e) => {
+            let value = e.target.value;
+            let [sortKey, sortValue] = value.split('-');
+            url.searchParams.set("sortKey", sortKey);
+            url.searchParams.set("sortValue", sortValue);
+            window.location.href = url.href;
+        })
+    }
+    let sortClear = document.querySelector("[sort-clear]");
+    if (sortClear) {
+        sortClear.addEventListener('click', (e) => {
+            if (url.searchParams.has("sortKey")) url.searchParams.delete("sortKey");
+            if (url.searchParams.has("sortValue")) url.searchParams.delete("sortValue");
+            window.location.href = url.href;
+        })
+    }
+    let sortKey=url.searchParams.get("sortKey"), sortValue=url.searchParams.get("sortValue")
+    if (sortKey && sortValue){
+        let sortCondition=`${sortKey}-${sortValue}`;
+        let option=document.querySelector(`option[value=${sortCondition}]`);
+        option.selected=true;
+    }
 }
