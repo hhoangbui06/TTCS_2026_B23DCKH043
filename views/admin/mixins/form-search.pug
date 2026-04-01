@@ -1,5 +1,5 @@
-mixin form-search(keyword)
-    form(id='form-search')
+mixin form-search(formId, keyword)
+    form(id=formId)
         .input-group
             input(type="text" placeholder="Nhập từ khóa" name="keyword" class="form-control" value=keyword)
             .input-group-append

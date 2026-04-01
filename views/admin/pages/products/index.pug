@@ -3,7 +3,7 @@ include ../../mixins/filter-status.pug
 include ../../mixins/form-search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
-include ../../mixins/alert.pug
+include ../../mixins/alert.pug 
 include ../../mixins/sort-select.pug
 
 block main
@@ -16,7 +16,7 @@ block main
                 .col-6
                     +filter-status(filterStatus)
                 .col-6
-                    +form-search(keyword)
+                    +form-search("form-change-products", keyword)
     +sort-select()
     .card.mb-3
         .card-header Danh sách sản phẩm
@@ -25,7 +25,7 @@ block main
         .card-body
             .row
                 .col-8
-                    +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)   
+                    +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`, `${prefixAdmin}/products/recovery`)
                 .col-4
                     a(
                         href=`${prefixAdmin}/products/create`
@@ -39,12 +39,11 @@ block main
                             input(type="checkbox" name="checkall")
                         th STT
                         th Hình ảnh
-                        th Tiêu đề
+                        th Tên sản phẩm
                         th Giá
                         th Vị trí
                         th Trạng thái
                         th Hành động
-                -let index=1
                 tbody                               
                     -for(let product of products)
                         tr
@@ -58,7 +57,7 @@ block main
                             td #{index++}
                             td
                                 img(src=product.thumbnail
-                                    alt=product.description
+                                    alt=!product.description
                                     width="100px"
                                     height="auto"
                                 )

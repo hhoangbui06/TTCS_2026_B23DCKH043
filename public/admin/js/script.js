@@ -15,7 +15,7 @@ if (buttons) {
         })
     }
 }
-let formSearch = document.querySelector("#form-search")
+let formSearch = document.querySelector("#form-search-products")
 if (formSearch) {
     formSearch.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -46,7 +46,19 @@ if (btnRecovery) {
         window.location.href = e.target.dataset.path;
     })
 }
-
+let buttonPagination = document.querySelectorAll(".page-link")
+if (buttonPagination) {
+    for (let button of buttonPagination) {
+        button.addEventListener('click', (e) => {
+            let page = Number(e.target.getAttribute('button-pagination'))
+            url.searchParams.set('page', page);
+            if (!page) {
+                url.searchParams.delete('page')
+            }
+            window.location.href = url.href;
+        })
+    }
+}
 let alertSuccess = document.querySelector('[show-alert]')
 if (alertSuccess) {
     const showTime = Number(alertSuccess.dataset.time);
@@ -101,10 +113,10 @@ if (sortDiv) {
             window.location.href = url.href;
         })
     }
-    let sortKey=url.searchParams.get("sortKey"), sortValue=url.searchParams.get("sortValue")
-    if (sortKey && sortValue){
-        let sortCondition=`${sortKey}-${sortValue}`;
-        let option=document.querySelector(`option[value=${sortCondition}]`);
-        option.selected=true;
+    let sortKey = url.searchParams.get("sortKey"), sortValue = url.searchParams.get("sortValue")
+    if (sortKey && sortValue) {
+        let sortCondition = `${sortKey}-${sortValue}`;
+        let option = document.querySelector(`option[value=${sortCondition}]`);
+        option.selected = true;
     }
 }

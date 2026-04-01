@@ -37,6 +37,11 @@ formChangeMulti.addEventListener("submit", (e) => {
     // e.preventDefault()
     let buttonChecked = document.querySelectorAll("input[name='id']:checked");
     let typeChange = e.target.elements.type.value
+    if (!typeChange){
+        e.preventDefault();
+        alert("Chọn hành động muốn thực hiện!");
+        return;
+    }
     if (buttonChecked.length < 1) {
         e.preventDefault()
         alert("Chọn sản phẩm muốn thay đổi!")

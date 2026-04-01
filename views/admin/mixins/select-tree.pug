@@ -1,0 +1,16 @@
+mixin select-tree(items, level=1)
+    -for(let item of items)
+        -const prefix=Array(level+1).join('-- ')
+        option(value=item._id) #{prefix}#{item.title}
+        if item.children && item.children.length>0
+            +select-tree(item.children,level+1)
+
+mixin select-tree-edit(items,record, level=1)
+    -for(let item of items)
+        -console.log("check")
+        -console.log(item.children)
+        -const prefix=Array(level+1).join('-- ')
+        option(value=item._id selected=(record.parent_id==item._id)) #{prefix}#{item.title}
+        if item.children && item.children.length>0
+            +select-tree(item.children,level+1)
+

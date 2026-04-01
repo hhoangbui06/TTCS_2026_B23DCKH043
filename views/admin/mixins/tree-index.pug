@@ -1,0 +1,55 @@
+mixin tree-index(categories, level=1, indexObj)
+    - for(let category of categories)
+        tr
+            td
+                input(
+                    type="checkbox"
+                    name="checksingle"
+                    value=category._id
+                    data-position=category.position
+                )
+            td 
+                - var prefix = Array(level+1).join('-- ')
+                | #{prefix}#{indexObj.value++}
+            td
+                img(
+                    src=category.thumbnail
+                    alt=!category.description
+                    width="100px"
+                    height="auto"
+                )
+            td #{category.title}
+            td 
+                input(
+                    type="number"
+                    value=category.position
+                    style="width:60px"
+                    min="1"
+                    name="position"
+                )
+            td
+                a(
+                    href="javascript:;" 
+                    data-id=category._id
+                    data-status=category.status
+                    class=category.badge
+                    button-change-status
+                ) #{category.stt}
+            td
+                a(
+                    href=`${prefixAdmin}/categories/detail/${category._id}`
+                    class="btn btn-primary btn-sm"
+                ) Chi tiết
+                a(
+                    href=`${prefixAdmin}/categories/edit/${category._id}`
+                    class="btn btn-warning btn-sm"
+                    button-edit-category
+                ) Sửa
+                button(
+                    class="btn btn-danger btn-sm ml-1"
+                    data-id=category._id
+                    button-delete-category
+                ) Xóa
+
+        if category.children && category.children.length > 0
+            +tree-index(category.children, level+1, indexObj)

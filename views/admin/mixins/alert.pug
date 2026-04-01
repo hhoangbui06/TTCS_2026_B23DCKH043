@@ -4,6 +4,6 @@ mixin alert-success(time)
             .alert.alert-success(data-time=time, show-alert) #{messages.success} <span close-alert>&times;</span>
 
 mixin alert-error(time)
-    -if(messages.titleError)
+    -if(messages.error)
         .message.info
             .alert.alert-danger(data-time=time, show-alert) #{messages.error} <span close-alert>&times;</span>

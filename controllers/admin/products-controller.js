@@ -38,8 +38,9 @@ module.exports.index = async (req, res) => {
         item.badge = item.status == "inactive" ? "badge badge-danger" : "badge badge-success";
         item.stt = item.badge === "badge badge-danger" ? "Không hoạt động" : "Hoạt động";
     })
+    let index=(objectPagination.currentPage-1)*objectPagination.limitItems+1
     res.render('admin/pages/products/index.pug', {
-        title: "Product", products: products, filterStatus: filterStatus, keyword: search.keyword, objectPagination: objectPagination
+        title: "Product", products: products, filterStatus: filterStatus, keyword: search.keyword, objectPagination: objectPagination, index:index
     })
 }
 module.exports.changeStatus = async (req, res) => {

@@ -1,0 +1,67 @@
+extends ../../layouts/default.pug
+include ../../mixins/pagination.pug
+include ../../mixins/alert.pug
+include ../../mixins/form-change-multi.pug
+include ../../mixins/form-search.pug
+include ../../mixins/sort-select.pug
+include ../../mixins/tree-index.pug
+
+block main
+    h1 Danh mục sản phẩm
+    +alert-success(3000)
+    +alert-error(5000)
+    .card.mb-3
+        .card-header Bộ lọc và tìm kiếm
+        .card-body
+            .row
+                .col-6
+                    
+                .col-6
+                    +form-search("form-search-categories", keyword)
+    +sort-select()
+    .card.mb-3
+        .card-header Danh sách
+        .card-body
+            .row                    
+                .col-8
+                    +form-change-multi(`${prefixAdmin}/categories/change-multi?_method=PATCH`, `${prefixAdmin}/categories/recovery`)
+                .col-4
+                    a(
+                        href=`${prefixAdmin}/categories/create`
+                        class="btn btn-outline-success"
+                    ) + Thêm mới
+            hr    
+            table(class="table table-hover table-sm" checkbox-multi)
+                thead
+                    tr
+                        th
+                            input(type="checkbox" name="checkall")
+                        th STT
+                        th Hình ảnh
+                        th Tên danh mục
+                        th Vị trí
+                        th Trạng thái
+                        th Hành động
+                tbody       
+                    - var indexObj={value:1}
+                    +tree-index(categories,1,indexObj)                   
+                    
+    form(
+        action=""
+        data-path=`${prefixAdmin}/categories/change-status`
+        form-change-status
+        method="POST"
+    )
+    form(
+        action=""
+        method="POST"
+        data-path=`${prefixAdmin}/categories/delete`
+        form-delete-category
+    )
+    form(
+        action=""
+        method="POST"
+        data-path=`${prefixAdmin}/categories/edit`
+        form-edit-category
+    )
+    script(src='/admin/js/category.js')
