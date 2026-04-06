@@ -24,7 +24,7 @@ block main
         .card-body
             .row                    
                 .col-8
-                    +form-change-multi(`${prefixAdmin}/categories/change-multi?_method=PATCH`, `${prefixAdmin}/categories/recovery`)
+                    +form-change-multi(prefixAdmin+`/categories/change-multi?_method=PATCH`, `${prefixAdmin}/categories/recovery`)
                 .col-4
                     a(
                         href=`${prefixAdmin}/categories/create`

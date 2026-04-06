@@ -2,15 +2,15 @@ const express = require('express');
 const app = express();
 
 const database = require('./config/database.js')
-async function startServer(){
-    try{
-        await database.connect();
-    }
-    catch(err){
-        console.log(err);
-    }
+async function connectDB() {
+  try {
+    await database.connect();
+  }
+  catch (err) {
+    console.log(err);
+  }
 }
-startServer();
+connectDB();
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'))
 
@@ -44,5 +44,5 @@ routeClient(app)
 routeAdmin(app)
 
 app.listen(port, () => {
-    console.log(`Welcome port ${port}`);
+  console.log(`Welcome port ${port}`);
 })

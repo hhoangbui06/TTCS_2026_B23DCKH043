@@ -1,0 +1,59 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/permissions.pug
+block main
+  h1(class='mb-4') Phân quyền
+  +alert-success(3000)
+  +alert-error(5000)
+  div(class='text-right')
+    button(
+      type="button"
+      class="btn btn-primary mb-3"
+      button-submit
+    ) Cập nhật
+  table(
+    class="table table-hover table-sm"
+    table-permission
+  )
+    div(data-records=records)
+    thead
+      tr
+        th Tính năng
+        -for(let item of records)
+          th(class="text-center") #{item.title}
+    tbody
+      tr(data-name='id')
+        td
+        each item in records
+          td(class="text-center d-none")
+            input(type="text" value=item._id)
+      tr
+        td Chọn tất cả
+        -for(let item of records)
+          td(class="text-center" )
+            input(type="checkbox" data-id=item._id check-all)
+      //- Danh mục
+      +permission-CRUD("Danh mục sản phẩm", ["products-category_views", "products-category_create", "products-category_edit", "products-category_delete"], records)
+      //- Sản phẩm
+      +permission-CRUD("Sản phẩm", ["product_views", "product_create", "product_edit", "product_delete"], records)
+      //- Nhóm quyền
+      +permission-CRUD("Nhóm quyền", ['role_views', 'role_create', 'role_edit', 'role_delete'], records) 
+      tr(data-name='role_permission')
+        td Phân quyền
+        -for(let item of records)
+          td(class="text-center") 
+            input(type="checkbox" data-id=item._id )
+
+  form(
+    id="form-change-permissions"
+    method="POST"
+    action=`${prefixAdmin}/roles/permissions?_method=PATCH`
+
+  )
+    div(class="form-group d-none")
+      input(
+        type="text"
+        class="form-control"
+        name="permissions"
+      )
+  script(src="/admin/js/permission.js")

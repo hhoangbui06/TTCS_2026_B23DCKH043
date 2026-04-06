@@ -1,0 +1,25 @@
+mixin permission-CRUD(name,permissions,records)
+  -let index=0
+  tr
+    td(colspan="4")
+      b #{name}
+  tr(data-name=permissions[index++])
+    td Xem
+    -for(let item of records)
+      td(class="text-center")
+        input(type="checkbox" data-id=item._id )
+  tr(data-name=permissions[index++])
+    td Thêm mới
+    -for(let item of records)
+      td(class="text-center")
+        input(type="checkbox" data-id=item._id )
+  tr(data-name=permissions[index++])
+    td Chỉnh sửa
+    -for(let item of records)
+      td(class="text-center")
+        input(type="checkbox" data-id=item._id)
+  tr(data-name=permissions[index++])
+    td Xóa
+    -for(let item of records)
+      td(class="text-center") 
+        input(type="checkbox" data-id=item._id )

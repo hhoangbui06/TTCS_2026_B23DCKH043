@@ -28,7 +28,7 @@ block main
                 name="parent_id"
             )
                 option(value='' disabled selected) --Chọn danh mục cha--
-                +select-tree-edit(newRecords,category)
+                +select-tree-category-edit(newRecords,category)
         div(class="form-group")
             label(for="desc") Mô tả
             textarea(
@@ -82,7 +82,7 @@ block main
                 value="inactive"
                 checked=category.status=="inactive"
             )
-            label(for="statusActive" class="form-check-label") Dừng hoạt động
+            label(for="statusInActive" class="form-check-label") Dừng hoạt động
         div(class="form-group")
             button(
                 type="submit"

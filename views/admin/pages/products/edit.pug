@@ -1,6 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
-
+include ../../mixins/select-tree.pug
 block main
     h1(class="mb-4") Chỉnh sửa sản phẩm
     +alert-success(2000)
@@ -22,6 +22,15 @@ block main
                 
             )
         div(class="form-group")
+            label(for='product-category') Danh mục
+            select(
+                name="product_category_id"
+                id="product_category_id"
+                class="form-control"
+            )
+              option(value="" disabled selected) --Chọn danh mục--
+                +select-tree-product-edit(records,product)
+        div(class="form-group")
             label(for='desc') Mô tả
             textarea(
                 class='form-control'
@@ -30,6 +39,7 @@ block main
                 rows='5'
                 textarea-tinymce
             ) #{product.description}
+        
         div(class="form-group")
             label(for='price') Giá
             input(

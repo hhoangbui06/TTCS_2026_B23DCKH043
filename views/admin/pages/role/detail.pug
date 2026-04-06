@@ -1,0 +1,15 @@
+extends ../../layouts/default.pug
+
+block main
+    -if (role.title)
+      h1(class='mb-4') #{role.title}
+    -if (role.description)
+      div(class='mb-4') Mô tả quyền: !{role.description}
+    -if (role.permission.length)
+      div(class='mb-4') Các quyền trong hệ thống:
+      ul
+        -for(let item of role.permissions)
+          li #{item}
+    a(href=`${prefixAdmin}/roles/edit/${role._id}` class='btn btn-info') Chỉnh sửa
+    
+    script(src='/admin/js/role.js')

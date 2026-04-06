@@ -2,8 +2,12 @@
     .inner-menu
         ul
             li
-                a(href=`${prefixAdmin}/dashboard`) Dashboard
+              a(href= prefixAdmin + '/dashboard') Dashboard
             li
-                a(href=`${prefixAdmin}/products`) Product
+              a(href= prefixAdmin + '/products') Product
             li
-                a(href=`${prefixAdmin}/categories`) Category 
+              a(href= prefixAdmin + '/categories') Category 
+            li
+              a(href= prefixAdmin + '/roles') Role
+            li
+              a(href= prefixAdmin + '/roles/permissions') Permission
