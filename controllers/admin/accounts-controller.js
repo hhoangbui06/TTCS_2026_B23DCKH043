@@ -17,15 +17,18 @@ module.exports.index = async (req, res) => {
         deleted: false,
         _id: role_id
       })
-      record.role=role.title
+      record.role = role.title
     }
-    else{
-      record.role="<b><i>Chưa phân quyền</i></b>"
+    else {
+      record.role = "<b><i>Chưa phân quyền</i></b>"
     }
   }
   res.render('admin/pages/accounts/index.pug', { title: "Danh sách tài khoản", records: records })
 }
 module.exports.create = async (req, res) => {
+  let findRole = {
+    deleted: false
+  }
   let roles = await dataRole.find(findRole)
   res.render('admin/pages/accounts/create.pug', { title: "Tạo mới tài khoản", roles: roles, oldData: req.flash('oldData')[0] || {} })
 }
@@ -47,4 +50,37 @@ module.exports.createAccount = async (req, res) => {
     req.flash('success', "Đã thêm mới tài khoản!")
     res.redirect(req.headers.referer)
   }
+}
+module.exports.edit = async (req, res) => {
+  let findRole = {
+    deleted: false
+  }
+  let roles = await dataRole.find(findRole)
+  let id = req.params.id;
+  let account = await dataAccounts.findOne({ _id: id })
+  res.render('admin/pages/accounts/edit.pug', { title: "Chỉnh sửa tài khoản", account: account, roles: roles })
+}
+module.exports.patchAccount = async (req, res) => {
+  let id = req.params.id;
+
+  let checkExistsAccount = await dataAccounts.findOne({
+    deleted: false,
+    email: req.body.email,
+    _id: { $ne: id }
+  })
+  if (checkExistsAccount) {
+    req.flash('error', 'Tài khoản đã tồn tại!')
+  }
+  else {
+    if (req.body.password) {
+      req.body.password = md5(req.body.password)
+    }
+    else {
+      delete req.body.password
+    }
+    await dataAccounts.updateOne({ _id: id }, req.body);
+    req.flash('success', "Đã cập nhật tài khoản!")
+  }
+  res.redirect(req.headers.referer)
+
 }

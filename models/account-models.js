@@ -8,7 +8,7 @@ const accountSchema=new mongoose.Schema({
   password:String,
   token:{
     type:String,
-    default:generate.generateRandomString
+    default:generate.generateRandomString(20)
   },
   phone:String,
   avatar:String,
@@ -21,7 +21,7 @@ const accountSchema=new mongoose.Schema({
   deletedAt:Date
 },
 {
-  timestamps:true
+  timestamps:true 
 })
 const account=mongoose.model('Accounts', accountSchema, 'accounts')
 module.exports=account;
