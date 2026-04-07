@@ -1,0 +1,50 @@
+const dataAccounts = require('../../models/account-models')
+const dataRole = require('../../models/role-models')
+const md5 = require('md5')
+
+module.exports.index = async (req, res) => {
+  let findRole = {
+    deleted: false
+  }
+  let findAccount = {
+    deleted: false
+  }
+  let records = await dataAccounts.find(findAccount)
+  for (let record of records) {
+    let role_id = record.role_id || ""
+    if (role_id) {
+      let role = await dataRole.findOne({
+        deleted: false,
+        _id: role_id
+      })
+      record.role=role.title
+    }
+    else{
+      record.role="<b><i>Chưa phân quyền</i></b>"
+    }
+  }
+  res.render('admin/pages/accounts/index.pug', { title: "Danh sách tài khoản", records: records })
+}
+module.exports.create = async (req, res) => {
+  let roles = await dataRole.find(findRole)
+  res.render('admin/pages/accounts/create.pug', { title: "Tạo mới tài khoản", roles: roles, oldData: req.flash('oldData')[0] || {} })
+}
+module.exports.createAccount = async (req, res) => {
+  let find = {
+    deleted: false,
+    email: req.body.email
+  }
+  let checkExists = await dataAccounts.findOne(find);
+  if (checkExists) {
+    req.flash('error', 'Tài khoản đã tồn tại. Vui lòng chọn tài khoản khác!')
+    req.flash('oldData', req.body);
+    res.redirect(req.headers.referer);
+  }
+  else {
+    req.body.password = md5(req.body.password);
+    let newAccount = new dataAccounts(req.body)
+    await newAccount.save()
+    req.flash('success', "Đã thêm mới tài khoản!")
+    res.redirect(req.headers.referer)
+  }
+}

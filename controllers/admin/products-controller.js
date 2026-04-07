@@ -104,7 +104,7 @@ module.exports.deleteProduct = async (req, res) => {
 module.exports.create = async(req, res) => {
     let categories = await dataCategories.find({ deleted: false });
     let newCategories = createTree.create(categories);
-    res.render('admin/pages/products/create.pug', { title: "Tạo mới sản phẩm" , records:newCategories})
+    res.render('admin/pages/products/create.pug', { title: "Tạo mới sản phẩm" , records:newCategories, oldData:req.flash('oldData')[0]||{}})
 }
 module.exports.createItem = async (req, res) => {
     try {

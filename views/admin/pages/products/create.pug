@@ -18,7 +18,7 @@ block main
                 class='form-control'
                 id='title'
                 name='title'
-                
+                value=oldData.title||""
             )
         div(class="form-group")
             label(for='product-category') Danh mục
@@ -38,7 +38,7 @@ block main
                 name='description'
                 rows='5'
                 textarea-tinymce
-            )
+            ) #{oldData.description ||""}
         div(class="form-group")
             label(for='price') Giá
             input(
@@ -46,9 +46,10 @@ block main
                 class='form-control'
                 id='price'
                 name='price'
-                value='0'
+                value=String(oldData.price) ||'0'
                 min='0'
                 step='any'
+
             )
         div(class="form-group")
             label(for='discount') Giảm giá
@@ -57,9 +58,9 @@ block main
                 class='form-control'
                 id='discount'
                 name='discountPercentage'
-                value='0'
                 min='0'
                 step='any'
+                value=String(oldData.discountPercentage)||'0'
             )
         div(class="form-group")
             label(for='stock') Số lượng
@@ -68,8 +69,8 @@ block main
                 class='form-control'
                 id='stock'
                 name='stock'
-                value='0'
                 min='0'
+                value=String(oldData.stock)||'0'
             )
         div(class="form-group" upload-image)
             label(for='thumbnail') Hình ảnh
@@ -83,7 +84,8 @@ block main
                 name='thumbnail'
                 upload-image-input
             )
-            img(src="" upload-image-preview class='image-preview')
+            img(src=oldData.thumbnail upload-image-preview class='image-preview')
+        input(type="hidden" name="thumbnail" value=oldData.thumbnail||"")
         div(class="form-group")
             label(for='position') Vị trí
             input(
@@ -93,6 +95,7 @@ block main
                 name='position'
                 placeholder="Tự động tăng"
                 min='1'
+                value=String(oldData.position) ||''
             )
         div(class="form-group form-check form-check-inline")
             input(
@@ -111,6 +114,7 @@ block main
                 id='statusInActive'
                 name='status'
                 value='inactive'
+                checked=(oldData.status=="inactive")
             )
             label(for="statusInActive" class="form-check-label") Dừng hoạt động
         div(class="form-group")

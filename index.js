@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path')
 
 const database = require('./config/database.js')
 async function connectDB() {
@@ -17,7 +18,6 @@ app.use(methodOverride('_method'))
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const flash = require('express-flash');
-const path = require('path')
 app.use(cookieParser('hhoangbui'));
 app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash())

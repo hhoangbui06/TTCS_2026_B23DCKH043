@@ -1,30 +1,30 @@
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
-require('dotenv').config()
+require('dotenv').config();
 cloudinary.config({
-    CLOUD_NAME: process.env.CLOUD_NAME,
-    API_KEY: process.env.API_KEY,
-    API_SECRET: process.env.API_SECRET
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
 })
-
 module.exports.upload = (req, res, next) => {
-    if (req.file) {
-        let uploader = (req) => {
-            return new Promise((resolve, reject) => {
-                let stream = cloudinary.uploader.upload_stream((err, res) => {
-                    if (res) resolve(res)
-                    if (err) reject(err);
-                })
-                streamifier.createReadStream(req.file.buffer).pipe(stream)
-            })
-        }
-        let cloudUpload = async (req) => {
-            let res = await uploader(req)
-            req.body[req.file.fieldname] = res.secure_url
-            next();
-        }
-        cloudUpload(req)
-
+  if (req.file) {
+    let uploader = (req) => {
+      return new Promise((resolve, reject) => {
+        let stream = cloudinary.uploader.upload_stream((err, res) => {
+          if (err) reject(err);
+          if (res) resolve(res);
+        })
+        streamifier.createReadStream(req.file.buffer).pipe(stream)
+      })
     }
-    else next();
+    async function upload(req) {
+      let res = await uploader(req);
+      req.body[req.file.fieldname] = res.secure_url
+      next();
+    }
+    upload(req);
+  }
+  else {
+    next();
+  }
 }

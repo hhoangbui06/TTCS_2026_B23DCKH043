@@ -18,7 +18,7 @@ module.exports = router.delete('/delete/:id', controller.deleteProduct)
 //[GET] /admin/products/recovery
 module.exports = router.get('/recovery', controller.recovery)
 // [GET]/admin/products/create
-module.exports = router.get('/create', controller.create)
+module.exports = router.get('/create', upload.single('thumbnail'), uploadCloud.upload, controller.create)
 // [POST] /admin/products/create
 module.exports = router.post('/create', upload.single('thumbnail'), uploadCloud.upload, validate.createItem, controller.createItem)
 
