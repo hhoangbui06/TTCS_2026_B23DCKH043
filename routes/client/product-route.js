@@ -6,3 +6,4 @@ const controller=require('../../controllers/client/product-controller')
 module.exports=router.get('/', controller.index)
 
 module.exports=router.get('/details/:slug', controller.detailItem)
+module.exports=router.get('/:slugCategory', controller.categoryProducts)

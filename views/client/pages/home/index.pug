@@ -13,3 +13,13 @@ block main
       .row
     .row
       +product-grid(featuredProducts)
+  .container.my-3
+    .row
+      .col-12
+        .box-head
+          +box-head("Sản phẩm mới nhất")
+    br
+    .card-body
+      .row
+    .row
+      +product-grid(recentlyProducts)

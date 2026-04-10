@@ -10,7 +10,7 @@ block main
       .row
         .col-12
           .box-head
-            +box-head("Danh sách sản phẩm")
+            +box-head(title)
       br
       .card-body
         .row
@@ -18,5 +18,5 @@ block main
             +form-search(keyword)
       .row
         +product-grid(products)
-      +pagination(objectPagination)
+      //- +pagination(objectPagination)
     script(src='/client/js/product.js')
