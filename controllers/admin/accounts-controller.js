@@ -1,7 +1,7 @@
 const dataAccounts = require('../../models/account-models')
 const dataRole = require('../../models/role-models')
 const md5 = require('md5')
-
+const setDetail=require('../../helpers/set-detail-helper');
 module.exports.index = async (req, res) => {
   let findRole = {
     deleted: false
@@ -10,6 +10,7 @@ module.exports.index = async (req, res) => {
     deleted: false
   }
   let records = await dataAccounts.find(findAccount)
+  records=setDetail.setStatus(records)
   for (let record of records) {
     let role_id = record.role_id || ""
     if (role_id) {
@@ -83,4 +84,23 @@ module.exports.patchAccount = async (req, res) => {
   }
   res.redirect(req.headers.referer)
 
+}
+
+module.exports.detailAccount=async (req,res)=>{
+  let id=req.params.id;
+  let account=await dataAccounts.findOne({
+    _id:id,
+    deleted:false
+  })
+  res.render('admin/pages/accounts/detail.pug', {title:"Chi tiết tài khoản", account:account})
+}
+module.exports.deleteAccount=async(req,res)=>{
+  let id=req.params.id;
+  await dataAccounts.updateOne({_id:id}, {deleted:true});
+  res.redirect(req.headers.referer)
+}
+module.exports.changeAccountStatus=async(req,res)=>{
+  let id=req.params.id, status=req.params.status;
+  await dataAccounts.updateOne({_id:id}, {status:status})
+  res.redirect(req.headers.referer)
 }

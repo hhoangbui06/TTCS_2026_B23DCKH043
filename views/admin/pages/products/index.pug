@@ -5,10 +5,10 @@ include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug 
 include ../../mixins/sort-select.pug
+include ../../mixins/formatDateTime.pug
 
 block main
     h1 Product Page
-    
     .card.mb-3
         .card-header Bộ lọc và tìm kiếm
         .card-body
@@ -27,6 +27,7 @@ block main
                 .col-8
                     +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`, `${prefixAdmin}/products/recovery`)
                 .col-4
+                  if(role.permissions.includes('product_create'))
                     a(
                         href=`${prefixAdmin}/products/create`
                         class="btn btn-outline-success"
@@ -44,6 +45,8 @@ block main
                         th Vị trí
                         th Trạng thái
                         th Hành động
+                        th Chỉnh sửa gần nhất
+                        th Người tạo
                 tbody                               
                     -for(let product of products)
                         tr
@@ -76,18 +79,45 @@ block main
                                     data-id=product._id
                                     data-status=product.status
                                     class=product.badge
-                                    button-change-status
+                                    button-change-status=role.permissions.includes('product_edit')
                                 ) #{product.stt}
                             td
-                                a(
-                                    href=`${prefixAdmin}/products/detail/${product._id}`
-                                    class="btn btn-primary btn-sm" data-id=product._id
-                                ) Chi tiết
+                              
+                              a(
+                                href=`${prefixAdmin}/products/detail/${product._id}`
+                                class="btn btn-primary btn-sm" data-id=product._id
+                              ) Chi tiết
+                              if(role.permissions.includes('product_edit'))
                                 a(
                                     href=`${prefixAdmin}/products/edit/${product._id}`
                                     class="btn btn-warning btn-sm" data-id=product._id
                                 ) Sửa
+                              if(role.permissions.includes('product_delete'))
                                 button(class="btn btn-danger btn-sm ml-1" data-id=product._id button-delete) Xóa
+                            td
+                              if(product.updateUser)
+                                if(role.permissions.includes('account_views'))
+                                  a(
+                                    href=`${prefixAdmin}/accounts/detail/${user._id}`
+                                  ) #{product.updateUser}
+                                else
+                                  b #{product.updateUser}
+                                +formatDateTime(product.updatedBy.updatedAt)
+                              else
+                                p <i>Chưa chỉnh sửa!</i>
+                            td
+                              if(product.createUser)
+                                if(role.permissions.includes('account_views')) 
+                                  a(
+                                    href=`${prefixAdmin}/accounts/detail/${user._id}`
+                                  ) #{product.createUser}
+                                else
+                                  b #{product.createUser}
+                                
+                                +formatDateTime(product.createdBy.createdAt)
+                              else
+                                p <i>Không có dữ liệu</i>
+                              
     +pagination(objectPagination)
     form(
         action=""

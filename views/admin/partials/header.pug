@@ -5,9 +5,14 @@ header.header
                 .inner-logo
                     a(href="/admin/dashboard") ADMIN
             .col-9
-              a(href="/admin/auth/login" style="float:right") Đăng nhập
+              
               div(class="text-right")
+                a(class="btn btn-primary btn-sm mr-2" style="color:white; display:inline; margin-right:10px"
+                  href=`${prefixAdmin}/my-account`
+                  
+                ) #{user.fullName}
                 a(
                   href=`${prefixAdmin}/auth/logout`
                   class="btn btn-danger btn-sm"
                 ) Đăng xuất
+              

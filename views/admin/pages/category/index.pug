@@ -26,6 +26,7 @@ block main
                 .col-8
                     +form-change-multi(prefixAdmin+`/categories/change-multi?_method=PATCH`, `${prefixAdmin}/categories/recovery`)
                 .col-4
+                  if(role.permissions.includes('products-category_create'))
                     a(
                         href=`${prefixAdmin}/categories/create`
                         class="btn btn-outline-success"

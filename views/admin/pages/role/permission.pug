@@ -43,6 +43,7 @@ block main
         -for(let item of records)
           td(class="text-center") 
             input(type="checkbox" data-id=item._id )
+      +permission-CRUD("Tài khoản", ['account_views', 'account_create', 'account_edit', 'account_delete'], records)
 
   form(
     id="form-change-permissions"

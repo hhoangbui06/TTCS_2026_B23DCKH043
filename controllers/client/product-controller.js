@@ -2,7 +2,8 @@ const data=require('../../models/product-model');
 const filterStatusHelper=require('../../helpers/filterStatus-helper')
 const searchHelper=require('../../helpers/search-helper')
 const paginationHelper=require('../../helpers/pagination-helper')
-
+const setDetail=require('../../helpers/set-detail-helper')
+const dataCategory=require('../../models/category-model');
 
 
 module.exports.index=async (req,res)=>{
@@ -21,10 +22,7 @@ module.exports.index=async (req,res)=>{
     }
     paginationHelper(objectPagination, req.query)
     let products=await data.find(find).skip(objectPagination.skipItems).limit(objectPagination.limitItems)
-    products.forEach(item=>{
-        item.priceNew=Math.round(item.price*(100-item.discountPercentage)/100)
-    })
-    // console.log(products)
+    products=setDetail.setPrice(products)
     res.render('client/pages/products/index.pug', {title:"Product", boxheadTitle:"This is product page!", products:products, keyword:searchTitle.keyword,
         objectPagination:objectPagination
     })

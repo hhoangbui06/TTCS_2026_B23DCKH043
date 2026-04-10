@@ -28,27 +28,29 @@ mixin tree-index(categories, level=1, indexObj)
                     name="position"
                 )
             td
-                a(
-                    href="javascript:;" 
-                    data-id=category._id
-                    data-status=category.status
-                    class=category.badge
-                    button-change-status
-                ) #{category.stt}
+              a(
+                  href="javascript:;" 
+                  data-id=category._id
+                  data-status=category.status
+                  class=category.badge
+                  button-change-status=role.permissions.includes('products-category_edit')
+              ) #{category.stt}
             td
+              a(
+                href=`${prefixAdmin}/categories/detail/${category._id}`
+                class="btn btn-primary btn-sm"
+              ) Chi tiết
+              if(role.permissions.includes('products-category_edit'))
                 a(
-                    href=`${prefixAdmin}/categories/detail/${category._id}`
-                    class="btn btn-primary btn-sm"
-                ) Chi tiết
-                a(
-                    href=`${prefixAdmin}/categories/edit/${category._id}`
-                    class="btn btn-warning btn-sm"
-                    button-edit-category
+                  href=`${prefixAdmin}/categories/edit/${category._id}`
+                  class="btn btn-warning btn-sm"
+                  button-edit-category
                 ) Sửa
+              if(role.permissions.includes('products-category_delete'))
                 button(
-                    class="btn btn-danger btn-sm ml-1"
-                    data-id=category._id
-                    button-delete-category
+                  class="btn btn-danger btn-sm ml-1"
+                  data-id=category._id
+                  button-delete-category
                 ) Xóa
 
         if category.children && category.children.length > 0

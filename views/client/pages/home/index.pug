@@ -1,3 +1,15 @@
 extends ../../layouts/default.pug
+include ../../mixins/product-layout.pug
+include ../../mixins/box-head.pug
+
 block main
-    h1(class="test") #{message}
+  .container.my-3
+    .row
+      .col-12
+        .box-head
+          +box-head("Sản phẩm nổi bật")
+    br
+    .card-body
+      .row
+    .row
+      +product-grid(featuredProducts)

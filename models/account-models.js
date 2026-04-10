@@ -18,6 +18,13 @@ const accountSchema=new mongoose.Schema({
     type:Boolean,
     default:false
   },
+  createdBy:{
+    account_id:String,
+    createdAt:{
+      type:String,
+      default:Date.now
+    }
+  },
   deletedAt:Date
 },
 {

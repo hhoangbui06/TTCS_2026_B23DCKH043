@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 const path = require('path')
 
+const moment=require('moment')
+app.locals.moment=moment;
+
 const database = require('./config/database.js')
 async function connectDB() {
   try {
