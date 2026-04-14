@@ -12,10 +12,14 @@ module.exports.setStatus = (records) => {
   return records
 }
 
-module.exports.setPrice = (records) => {
+module.exports.setNewPrice = (records) => {
   records.forEach(item => {
     item.priceNew = Math.round(item.price * (100 - item.discountPercentage) / 100);
   }
   )
   return records;
+}
+module.exports.setNewPriceProduct=(item)=>{
+  item.priceNew = Math.round(item.price * (100 - item.discountPercentage) / 100);
+  return item;
 }

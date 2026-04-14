@@ -1,5 +1,8 @@
 mixin form-search(formId, keyword)
-    form(id=formId)
+    form(
+      method="GET"
+      id=formId
+    )
         .input-group
             input(type="text" placeholder="Nhập từ khóa" name="keyword" class="form-control" value=keyword)
             .input-group-append

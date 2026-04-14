@@ -14,9 +14,6 @@ block main
       br
       .card-body
         .row
-          .col-6
-            +form-search(keyword)
-      .row
-        +product-grid(products)
-      //- +pagination(objectPagination)
+          +product-grid(products)
+      +pagination(objectPagination)
     script(src='/client/js/product.js')
