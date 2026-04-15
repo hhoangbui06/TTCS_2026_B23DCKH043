@@ -1,0 +1,75 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/alert.pug
+
+block main
+  +alert-success(3000)
+  +alert-error(5000)
+
+  .container.my-3
+    .row
+      .col-12
+        +box-head(title)
+    .row
+      .col-12
+        -const PRODUCT_PATH="/products"
+        -let index=1
+        table(class="table table-bordered")
+          thead
+            tr
+              th STT
+              th Ảnh
+              th Sản phẩm
+              th Giá
+              th Số lượng
+              th Tổng tiền
+              th Hành động
+          tbody
+            if(cartProducts.length>0)
+              -for(let item of cartProducts)
+                tr
+                  td #{index++}
+                  td
+                    img(src=item.product.thumbnail, alt=item.product.description width="80px")
+                  td
+                    a(href=`${PRODUCT_PATH}/details/${item.product.slug}`) #{item.product.title}
+                  td #{item.product.priceNew} $
+                  td
+                    input(
+                      type="number"
+                      name="quantity"
+                      value=item.quantity
+                      min="1"
+                      data-id=item.product_id
+                      style="width:60px"
+                    )
+                  td #{item.product.priceNew*item.quantity} $
+                  td
+                    button(
+                      type="button"
+                      class="btn btn-danger"
+                      data-id=item.product_id
+                      button-cart-delete
+                    ) Xóa
+            else
+              tr
+                td(colspan='7')
+                  h3.text-center Chưa có sản phẩm nào được thêm!
+        h3(class="text-right") Tổng đơn hàng: #{cartProducts.totalPrice || 0} $
+
+        div(class="text-right mt-3")
+          a(href="/checkout" class="btn btn-success") THANH TOÁN
+
+      form(
+        method="POST"
+        action=""
+        data-path="/cart/delete"
+        form-cart-delete
+      )
+      form(
+        method="POST"
+        action=""
+        data-path="/cart/change-quantity"
+        form-cart-change-quantity
+      )
+  script(src="/client/js/cart.js")

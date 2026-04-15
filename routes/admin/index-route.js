@@ -10,11 +10,10 @@ const myAccountRoute = require('./my-account-route')
 module.exports = (app) => {
   const PATH_ADMIN = systemConfig.prefixAdmin;
   app.use(PATH_ADMIN + '/auth', authRoute)
-  app.use(authMiddleware.authLogin)
-  app.use(PATH_ADMIN + '/dashboard', dashboardRoute)
-  app.use(PATH_ADMIN + '/products', productsRoute)
-  app.use(PATH_ADMIN + '/categories', categoryRoute)
-  app.use(PATH_ADMIN + '/roles', roleRoute)
-  app.use(PATH_ADMIN + '/accounts', accountsRoute)
-  app.use(PATH_ADMIN + '/my-account', myAccountRoute)
+  app.use(PATH_ADMIN + '/dashboard', authMiddleware.authLogin, dashboardRoute)
+  app.use(PATH_ADMIN + '/products', authMiddleware.authLogin, productsRoute)
+  app.use(PATH_ADMIN + '/categories', authMiddleware.authLogin, categoryRoute)
+  app.use(PATH_ADMIN + '/roles', authMiddleware.authLogin, roleRoute)
+  app.use(PATH_ADMIN + '/accounts', authMiddleware.authLogin, accountsRoute)
+  app.use(PATH_ADMIN + '/my-account', authMiddleware.authLogin, myAccountRoute)
 }

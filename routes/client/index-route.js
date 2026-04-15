@@ -4,6 +4,8 @@ const headerMiddleware = require('../../middlewares/client/header-middleware')
 const searchRoutes=require('./search-route')
 const cartMiddleware=require('../../middlewares/client/cart-middleware')
 const cartRoute=require('./cart-route');
+const checkoutRoute=require('./checkout-route')
+
 module.exports = (app) => {
   app.use(cartMiddleware.checkCart)
   app.use(headerMiddleware.getCategory)
@@ -11,4 +13,5 @@ module.exports = (app) => {
   app.use('/products', productRoutes)
   app.use('/search', searchRoutes)
   app.use('/cart', cartRoute)
+  app.use('/checkout', checkoutRoute)
 }
