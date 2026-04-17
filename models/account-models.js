@@ -1,6 +1,6 @@
 const slug=require('mongoose-slug-updater')
 const mongoose=require('mongoose')
-const generate=require('../helpers/generate')
+const generate=require('../helpers/generate-helper')
 
 const accountSchema=new mongoose.Schema({
   fullName:String,

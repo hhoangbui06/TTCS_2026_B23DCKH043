@@ -55,8 +55,8 @@ module.exports.index = async (req, res) => {
       let userId = updatedInfo.account_id;
       let user = await dataAccounts.findOne({
         _id: userId
-      }).select('fullName')
-      item.updateUser = user.fullName
+      }).select('fullName _id')
+      item.updateUser = user
     }
   }
   let index = (objectPagination.currentPage - 1) * objectPagination.limitItems + 1

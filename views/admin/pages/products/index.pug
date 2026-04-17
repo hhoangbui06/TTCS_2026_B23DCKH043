@@ -98,11 +98,11 @@ block main
                               if(product.updateUser)
                                 if(role.permissions.includes('account_views'))
                                   a(
-                                    href=`${prefixAdmin}/accounts/detail/${user._id}`
-                                  ) #{product.updateUser}
+                                    href=`${prefixAdmin}/accounts/detail/${product.updateUser._id}`
+                                  ) #{product.updateUser.fullName}
                                 else
                                   b #{product.updateUser}
-                                +formatDateTime(product.updatedBy.updatedAt)
+                                +formatDateTime(product.updatedBy[product.updatedBy.length-1].updatedAt)
                               else
                                 p <i>Chưa chỉnh sửa!</i>
                             td
