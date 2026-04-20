@@ -7,7 +7,7 @@ const cartRoute=require('./cart-route');
 const checkoutRoute=require('./checkout-route')
 const userRoute=require('./user-route')
 const userMiddleware=require('../../middlewares/client/user-middleware')
-
+const authMiddleware=require('../../middlewares/client/auth-middleware')
 
 module.exports = (app) => {
   app.use(cartMiddleware.checkCart)

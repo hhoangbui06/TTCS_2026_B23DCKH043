@@ -16,7 +16,7 @@ module.exports.index = async (req, res) => {
     let productId = item.product_id;
     let product = await dataProducts.findOne({
       _id: productId
-    }).select('thumbnail price title discountPercentage')
+    }).select('thumbnail price title discountPercentage slug')
     item.product = setDetail.setNewPriceProduct(product)
   }))
   products.totalPrice = products.reduce((total, item) => {

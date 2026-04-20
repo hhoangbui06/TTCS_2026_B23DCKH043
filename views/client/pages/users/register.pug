@@ -13,6 +13,7 @@ block main
         form(
           action="/users/register"
           method="POST"
+          enctype="multipart/form-data"
         )
           div(class="form-group")
             label(for="fullName") Họ và tên
@@ -22,6 +23,30 @@ block main
               id="fullName"
               name="fullName"
               value=oldData.fullName||""
+            )
+          div(
+            class="form-group"
+            upload-image
+          )    
+            label(for="avatar") Avatar
+            button(class="btn-hidden" id="clear-input-image" type="button") &times;
+            input(
+              type="file"
+              class="form-control-file"
+              id="avatar"
+              name="avatar"
+              accept="image/*"
+              upload-image-input
+            )
+            input(
+              type="hidden"
+              name="avatar"
+              value=oldData.avatar || ""
+            )
+            img(
+              src=oldData.avatar || ""
+              class="image-preview"
+              upload-image-preview
             )
           div(class="form-group")
             label(for="email") Email

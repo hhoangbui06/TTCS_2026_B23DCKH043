@@ -3,7 +3,7 @@ const md5 = require('md5')
 const generateHelper = require('../../helpers/generate-helper');
 const timeHelper = require("../../helpers/expires-time.helper")
 const dataForgotPassword = require('../../models/forgot-password-model')
-const sendMail=require('../../helpers/send-mail-helper')
+const sendMail = require('../../helpers/send-mail-helper')
 
 
 module.exports.getRegister = (req, res) => {
@@ -24,7 +24,7 @@ module.exports.postRegister = async (req, res) => {
     newInfo.password = md5(newInfo.password)
     let newUser = new dataUsers(newInfo)
     await newUser.save();
-    res.locals.user=newUser;
+    res.locals.user = newUser;
     res.cookie('tokenUser', newUser.tokenUser)
     req.flash('success', "Đăng ký tài khoản thành công!")
     res.redirect('/')
@@ -35,7 +35,6 @@ module.exports.getLogin = (req, res) => {
 }
 module.exports.postLogin = async (req, res) => {
   const loginInfo = req.body;
-  console.log(req.body)
   let checkExistsUser = await dataUsers.findOne({
     email: loginInfo.email,
     password: md5(loginInfo.password)
@@ -86,7 +85,7 @@ module.exports.postForgotPassword = async (req, res) => {
       return;
     }
     else {
-      const otp=generateHelper.generateRandomInteger(6);
+      const otp = generateHelper.generateRandomInteger(6);
       let forgotInfo = {
         email: email,
         OTP: otp,
@@ -125,25 +124,51 @@ module.exports.postOTPPassword = async (req, res) => {
   }
 }
 module.exports.getResetPassword = (req, res) => {
-  res.render('client/pages/users/reset-password.pug', { title: "Nhập mật khẩu mới", oldData:req.flash('oldData')[0]||{}})
+  res.render('client/pages/users/reset-password.pug', { title: "Nhập mật khẩu mới", oldData: req.flash('oldData')[0] || {} })
 }
-module.exports.postResetPassword=async (req,res)=>{
-  let tokenUser=req.cookies.tokenUser;
-  if (tokenUser){
-  let password=req.body.password;
-  let checkUser=await dataUsers.findOne({
-    tokenUser:tokenUser
+module.exports.postResetPassword = async (req, res) => {
+  let tokenUser = req.cookies.tokenUser;
+  if (tokenUser) {
+    let password = req.body.password;
+    let checkUser = await dataUsers.findOne({
+      tokenUser: tokenUser
+    })
+    await dataUsers.updateOne({
+      tokenUser: tokenUser
+    }, {
+      password: md5(password)
+    })
+    req.flash('success', "Cập nhật mật khẩu thành công!")
+    res.redirect('/')
+  }
+  else {
+    req.flash('error', "Đã xảy ra lỗi!")
+    res.redirect(req.headers.referer);
+  }
+}
+module.exports.getInfo = (req, res) => {
+  res.render('client/pages/users/info.pug', { title: "Thông tin cá nhân" })
+}
+module.exports.getEditInfo = (req, res) => {
+  res.render('client/pages/users/info-edit.pug', { title: "Cập nhật thông tin" })
+}
+module.exports.patchInfoEdit = async (req, res) => {
+  if (!req.body.password) delete req.body.password;
+  else req.body.password = md5(req.body.password);
+  let checkExistsUser = await dataUsers.findOne({
+    email: req.body.email,
+    tokenUser: {$ne:res.locals.user.tokenUser},
+    deleted: false
   })
-  await dataUsers.updateOne({
-    tokenUser:tokenUser
-  },{
-    password:md5(password)
-  })
-  req.flash('success', "Cập nhật mật khẩu thành công!")
-  res.redirect('/')
-}
-else{
-  req.flash('error', "Đã xảy ra lỗi!")
-  res.redirect(req.headers.referer);
-}
+  if (checkExistsUser) {
+    req.flash('error', "Tài khoản đã tồn tại!")
+    req.flash('oldData', req.body)
+    res.redirect(req.headers.referer)
+    return;
+  }
+  else {
+    await dataUsers.updateOne({tokenUser:res.locals.user.tokenUser}, req.body)
+    req.flash('success', "Đã cập nhật tài khoản thành công!")
+    res.redirect(req.headers.referer)
+  }
 }
