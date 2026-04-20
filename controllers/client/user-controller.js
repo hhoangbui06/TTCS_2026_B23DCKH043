@@ -27,6 +27,7 @@ module.exports.postRegister = async (req, res) => {
     res.locals.user = newUser;
     res.cookie('tokenUser', newUser.tokenUser)
     req.flash('success', "Đăng ký tài khoản thành công!")
+    req.flash('oldData', newInfo)
     res.redirect('/')
   }
 }
