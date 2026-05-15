@@ -10,8 +10,12 @@ block main
     p Họ tên: <b>#{user.fullName}</b>
   if(user.email)
     p Email: <b>#{user.email}</b>
+  if(user.phone)
+    p Phone: <b>#{user.phone}</b>
+  if(user.address)
+    p Address: <b>#{user.address}</b>
   p
-    span Trạng thái:
+    span Trạng thái: 
     span
       <b>#{user.status=="active"?"Hoạt động":"Dừng hoạt động"}</b>
   if(role.title)

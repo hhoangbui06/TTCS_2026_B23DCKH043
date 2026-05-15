@@ -8,11 +8,7 @@ const dataCategories = require('../../models/category-model')
 const dataAccounts = require('../../models/account-models')
 const setDetail = require('../../helpers/set-detail-helper')
 
-const prefixAdmin = systemConfig.prefixAdmin;
-module.exports.recovery = async (req, res) => {
-  await dataProducts.updateMany({}, { deleted: false })
-  res.redirect(req.headers.referer)
-}
+const prefixAdmin=systemConfig.prefixAdmin
 module.exports.index = async (req, res) => {
   let sortProducts = {};
   if (req.query.sortKey && req.query.sortValue) {
@@ -39,16 +35,14 @@ module.exports.index = async (req, res) => {
   let products = await dataProducts.find(find).sort(sortProducts).skip(objectPagination.skipItems).limit(objectPagination.limitItems);
 
   products = setDetail.setStatus(products);
-  products = setDetail.setStatus(products);
+  products = setDetail.setNewPrice(products);
   for (let item of products) {
     if (item.createdBy.account_id) {
-      console.log(item)
       let userId = item.createdBy.account_id;
       let user = await dataAccounts.findOne({
         _id: userId
-      }).select('fullName')
-      console.log(user)
-      item.createUser = user.fullName
+      }).select('fullName _id')
+      item.createUser = user
     }
     if (item.updatedBy.length > 0) {
       let updatedInfo = item.updatedBy[item.updatedBy.length - 1];
@@ -101,7 +95,7 @@ module.exports.changeMulti = async (req, res) => {
         await dataProducts.updateMany({ _id: { $in: ids } }, { status: "inactive", $push: { updatedBy: updatedInActive } });
         req.flash('success', `Đã cập nhật thành công trạng thái của ${ids.length} sản phẩm!`)
         break;
-      case "delete-all":
+      case "delete-multi":
         await dataProducts.updateMany({ _id: { $in: ids } }, {
           deleted: true, deletedBy: {
             account_id: res.locals.user._id,
@@ -140,6 +134,7 @@ module.exports.deleteProduct = async (req, res) => {
       deletedAt: new Date()
     }
   })
+  req.flash("success", "Đã xóa sản phẩm!")
   res.redirect(req.headers.referer)
 }
 
@@ -201,7 +196,7 @@ module.exports.editProduct = async (req, res) => {
 
 module.exports.detailItem = async (req, res) => {
   let id = req.params.id;
-  let productDetail = await dataProducts.findOne({ _id: id, deleted: false })
+  let productDetail = await dataProducts.findOne({ _id: id })
   if (productDetail) {
     res.render('admin/pages/products/detail', { product: productDetail })
   }

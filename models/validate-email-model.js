@@ -11,5 +11,5 @@ const forgotPasswordSchema=new mongoose.Schema({
   timestamps:true
 })
 
-const forgotPassword=mongoose.model('ForgotPassword', forgotPasswordSchema, 'forgot-password')
+const forgotPassword=mongoose.model('ValidateEmail', forgotPasswordSchema, 'validate-email')
 module.exports=forgotPassword

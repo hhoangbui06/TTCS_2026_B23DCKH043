@@ -15,16 +15,14 @@ block main
         .card-body
             .row
                 .col-6
-                    
-                .col-6
-                    +form-search("form-search-categories", keyword)
+                  +form-search("form-search-categories", keyword)
     +sort-select()
     .card.mb-3
         .card-header Danh sách
         .card-body
             .row                    
                 .col-8
-                    +form-change-multi(prefixAdmin+`/categories/change-multi?_method=PATCH`, `${prefixAdmin}/categories/recovery`)
+                    +form-change-multi(prefixAdmin+`/categories/change-multi?_method=PATCH`)
                 .col-4
                   if(role.permissions.includes('products-category_create'))
                     a(

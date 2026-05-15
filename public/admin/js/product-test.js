@@ -7,7 +7,6 @@ for (let badge of badges) {
         let id = badge.dataset.id, currentStatus = badge.dataset.status;
         let newStatus=currentStatus=="inactive"?"active":"inactive"
         formChange.action = `${pathChange}/${newStatus}/${id}`      
-        console.log(formChange.action)  
         formChange.submit()
     })
 }

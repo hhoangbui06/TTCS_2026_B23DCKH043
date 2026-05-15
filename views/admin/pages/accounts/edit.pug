@@ -101,3 +101,14 @@ block main
         type="submit"
         class="btn btn-primary"
       ) Cập nhật
+      button(
+        class="btn btn-success "
+        data-id=account._id
+        button-account-recovery
+      ) Khôi phục mật khẩu 
+  form(
+    action=`${prefixAdmin}/accounts/recovery`
+    method="POST"
+    form-account-recovery
+  )
+  script(src="/admin/js/account.js")

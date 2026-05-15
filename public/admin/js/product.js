@@ -27,7 +27,6 @@ for (let checkbox of checkSingle) {
         let checkedCount = document.querySelectorAll("input[name='id']:checked")
         if (checkedCount.length === checkSingle.length) checkAll.checked = true
         else checkAll.checked = false;
-        // console.log(checkbox.value)
     })
 }
 }
@@ -47,7 +46,7 @@ formChangeMulti.addEventListener("submit", (e) => {
         alert("Chọn sản phẩm muốn thay đổi!")
     }
     else {
-        if (typeChange == "delete-all") {
+        if (typeChange == "delete-multi") {
             let isConfirm=confirm("Chắc chắn xóa tất cả sản phẩm đã chọn?")
             if (!isConfirm) e.preventDefault()  
         }   
@@ -55,7 +54,6 @@ formChangeMulti.addEventListener("submit", (e) => {
         for (let button of buttonChecked) {
             let tr=button.closest("tr");
             let setPosition=tr.querySelector("input[name='position']")
-            console.log(setPosition)
             let idString=button.value
             if (typeChange="change-position") idString+=`-${setPosition.value}`
             ids.push(idString)

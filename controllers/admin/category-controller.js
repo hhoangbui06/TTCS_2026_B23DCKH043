@@ -43,7 +43,6 @@ module.exports.createCategory = async (req, res) => {
     }
     const newCategory = new data(req.body);
     await newCategory.save();
-    // console.log(req.body)
     req.flash('success', "Đã thêm mới danh mục sản phẩm")
     res.redirect(req.headers.referer)
 }
@@ -111,7 +110,6 @@ module.exports.changeMulti = async (req, res) => {
         case "change-position":
             for (let id_pos of ids_pos) {
                 let [id, pos] = id_pos.split('-');
-                console.log(id, pos)
                 await data.updateOne({ _id: id }, { position: pos });
             }
             req.flash('success', `Đã cập nhật vị trí của ${ids.length} danh mục!`)

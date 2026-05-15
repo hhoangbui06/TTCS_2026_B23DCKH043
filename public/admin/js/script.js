@@ -1,4 +1,3 @@
-console.log("OKscript")
 let url = new URL(window.location.href)
 let buttons = document.querySelectorAll("button[button-status]")
 if (buttons) {
@@ -9,8 +8,6 @@ if (buttons) {
             if (!status) {
                 url.searchParams.delete("status")
             }
-            console.log("OK")
-            console.log(window.location.href)
             window.location.href = url.href
         })
     }
@@ -20,10 +17,7 @@ if (formSearch) {
     formSearch.addEventListener("submit", (e) => {
         e.preventDefault();
         const keyword = e.target.elements.keyword.value;
-        console.log(keyword)
-        console.log("OK")
         url.searchParams.set("keyword", keyword);
-        console.log(url.searchParams)
         if (!keyword) url.searchParams.delete("keyword")
         window.location.href = url.href;
     })
@@ -94,8 +88,6 @@ if (uploadImage) {
 }
 
 let sortDiv = document.querySelector("div[sort]")
-console.log("sortDiv")
-console.log(sortDiv)
 if (sortDiv) {
     let sortSelect = document.querySelector("[sort-select]");
     if (sortSelect) {

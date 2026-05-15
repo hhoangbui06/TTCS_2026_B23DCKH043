@@ -46,6 +46,15 @@ block main
           name="phone"
           value=user.phone||""
         )
+    div(class="form-group")
+      label(for="address") Địa chỉ
+        input(
+          type="text"
+          class="form-control"
+          id="address"
+          name="address"
+          value=user.address||""
+        )
     div(
       class="form-group"
       upload-image

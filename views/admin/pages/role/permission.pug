@@ -36,6 +36,11 @@ block main
       +permission-CRUD("Danh mục sản phẩm", ["products-category_views", "products-category_create", "products-category_edit", "products-category_delete"], records)
       //- Sản phẩm
       +permission-CRUD("Sản phẩm", ["product_views", "product_create", "product_edit", "product_delete"], records)
+      tr(data-name="product_recovery")
+        td Khôi phục
+        - for(let item of records)
+          td(class="text-center")
+            input(type="checkbox" data-id=item._id)
       //- Nhóm quyền
       +permission-CRUD("Nhóm quyền", ['role_views', 'role_create', 'role_edit', 'role_delete'], records) 
       tr(data-name='role_permission')
@@ -44,7 +49,11 @@ block main
           td(class="text-center") 
             input(type="checkbox" data-id=item._id )
       +permission-CRUD("Tài khoản", ['account_views', 'account_create', 'account_edit', 'account_delete'], records)
-
+      tr(data-name="account_recovery")
+        td Khôi phục mật khẩu
+        -for(let item of records)
+          td(class="text-center")
+            input(type="checkbox" data-id=item._id)
   form(
     id="form-change-permissions"
     method="POST"

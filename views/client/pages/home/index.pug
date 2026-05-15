@@ -5,9 +5,12 @@ include ../../mixins/box-head.pug
 block main
   .container.my-3
     .row
-      .col-12
+      .col-6
         .box-head
           +box-head("Sản phẩm nổi bật")
+      .col-6.text-right
+        h4.box-head
+          a(href="/products/featured") Xem thêm&gt;
     br
     .card-body
       .row
@@ -15,9 +18,24 @@ block main
       +product-grid(featuredProducts)
   .container.my-3
     .row
-      .col-12
+      .col-6
+          +box-head("Sản phẩm giá tốt")
+      .col-6.text-right
+        h4.box-head
+          a(href="/products/best-sale") Xem thêm&gt;
+    br
+    .card-body
+      .row
+    .row
+      +product-grid(bestSaleProducts)
+  .container.my-3
+    .row
+      .col-6
         .box-head
           +box-head("Sản phẩm mới nhất")
+      .col-6.text-right
+        h4.box-head
+          a(href="/products/recently") Xem thêm&gt;
     br
     .card-body
       .row

@@ -11,7 +11,11 @@ const userSchema=new mongoose.Schema({
   },
   avatar:String,
   phone:String,
-  avatar:String,
+  avatar:{
+    type:String,
+    default:"https://res.cloudinary.com/dwmzdnacn/image/upload/v1778812647/t%E1%BA%A3i_xu%E1%BB%91ng_aarq4c.png"
+  },
+  address:String,
   status:{
     type:String,
     default:'active'

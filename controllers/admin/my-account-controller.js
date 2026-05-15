@@ -20,7 +20,6 @@ module.exports.patchAccount=async (req,res)=>{
     return;
   }
   let account=res.locals.user;
-  console.log(account)
   await dataAccounts.updateOne({_id:account._id}, req.body);
   req.flash('success', "Đã cập nhật thông tin tài khoản thành công!")
   res.redirect(req.headers.referer)

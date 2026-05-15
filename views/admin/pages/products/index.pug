@@ -25,7 +25,7 @@ block main
         .card-body
             .row
                 .col-8
-                    +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`, `${prefixAdmin}/products/recovery`)
+                    +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`, )
                 .col-4
                   if(role.permissions.includes('product_create'))
                     a(
@@ -33,7 +33,7 @@ block main
                         class="btn btn-outline-success"
                     ) +Thêm mới
    
-            table(class="table table-hover table-sm" checkbox-multi)
+            table(class="table table-hover table-sm text-center" checkbox-multi)
                 thead
                     tr
                         th
@@ -109,10 +109,10 @@ block main
                               if(product.createUser)
                                 if(role.permissions.includes('account_views')) 
                                   a(
-                                    href=`${prefixAdmin}/accounts/detail/${user._id}`
-                                  ) #{product.createUser}
+                                    href=`${prefixAdmin}/accounts/detail/${product.createUser._id}`
+                                  ) #{product.createUser.fullName}
                                 else
-                                  b #{product.createUser}
+                                  b #{product.createUser.fullName}
                                 
                                 +formatDateTime(product.createdBy.createdAt)
                               else

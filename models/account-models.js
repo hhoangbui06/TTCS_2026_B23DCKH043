@@ -11,9 +11,13 @@ const accountSchema=new mongoose.Schema({
     default:generate.generateRandomString(20)
   },
   phone:String,
-  avatar:String,
+  avatar:{
+    type:String,
+    default:"https://res.cloudinary.com/dwmzdnacn/image/upload/v1778812647/t%E1%BA%A3i_xu%E1%BB%91ng_aarq4c.png"
+  },
   role_id:String,
   status:String,
+  address:String,
   deleted:{
     type:Boolean,
     default:false

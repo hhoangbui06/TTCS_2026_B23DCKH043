@@ -1,7 +1,6 @@
 
 let url_category = new URL(window.location.href);
 let buttonChange = document.querySelectorAll("[button-change-status]")
-console.log(buttonChange)
 if (buttonChange) {
     let formChange = document.querySelector("[form-change-status]")
     for (let button of buttonChange) {
@@ -11,7 +10,6 @@ if (buttonChange) {
             let newStatus = currentStatus == "active" ? "inactive" : "active"
             let path = formChange.dataset.path;
             formChange.action = `${path}/${newStatus}/${id}`
-            console.log(formChange.action)
             formChange.submit();
         })
     }
@@ -36,7 +34,6 @@ if (checkSingle) {
     for (let checkbox of checkSingle) {
         checkbox.addEventListener("click", (e) => {
             let checkedBox = document.querySelectorAll("[name='checksingle']:checked")
-            console.log(checkedBox.length, checkSingle.length)
             if (checkedBox.length === checkSingle.length) checkAll.checked = true
             else checkAll.checked = false
         })
@@ -66,7 +63,6 @@ if (buttonEdit) {
 
 
 let formSearchCategory = document.querySelector("#form-search-categories")
-console.log(formSearchCategory)
 if (formSearchCategory) {
     formSearchCategory.addEventListener('submit', (e) => {
         let value = e.target.value;
@@ -87,7 +83,7 @@ if (formChange) {
             alert("Chọn hành động muốn thực hiện!")
             return;
         }
-        if (type==="delete-all"){
+        if (type==="delete-multi"){
             let isConfirm=confirm("Chắc chắn xóa các danh mục đã chọn?");
             if (!isConfirm){
                 e.preventDefault();

@@ -15,3 +15,4 @@ module.exports = router.patch('/edit/:id', upload.single('avatar'), uploadCloud.
 module.exports = router.get('/detail/:id', upload.single('avatar'), uploadCloud.upload, controller.detailAccount)
 module.exports = router.delete('/delete/:id', controller.deleteAccount);
 module.exports = router.post('/change-status/:status/:id', controller.changeAccountStatus)
+module.exports=router.post('/recovery/:id', controller.recoveryAccount)

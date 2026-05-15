@@ -104,3 +104,17 @@ module.exports.changeAccountStatus=async(req,res)=>{
   await dataAccounts.updateOne({_id:id}, {status:status})
   res.redirect(req.headers.referer)
 }
+module.exports.recoveryAccount=async(req,res)=>{
+  let id=req.params.id;
+  let account=await dataAccounts.findOne({_id:id})
+  if(account){
+    let email=account.email;
+    await dataAccounts.updateOne({_id:id}, {password:md5(email)})
+    req.flash("success", "Đã reset mật khẩu mặc định!")
+    res.redirect(req.headers.referer)
+  }
+  else{
+    req.flash('error', "Không tìm thấy tài khoản")
+    res.redirect(req.headers.referer)
+  }
+}

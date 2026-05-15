@@ -6,7 +6,7 @@ module.exports.generateRandomString=(len)=>{
   }
   return res;
 }
-module.exports.generateRandomInteger=(len)=>{
+module.exports.generateRandomNumber=(len)=>{
   const character="0123456789";
   let res=""
   for (let i=0; i<len; i++){

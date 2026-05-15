@@ -8,7 +8,6 @@ const categoryHelper = require('../../helpers/product-category-helper');
 
 let index=0;
 module.exports.index = async (req, res) => {
-  console.log("Product controller running");
   let find = {
     deleted: false,
     status: 'active'
@@ -25,6 +24,70 @@ module.exports.index = async (req, res) => {
   let products = await dataProducts.find(find).skip(objectPagination.skipItems).limit(objectPagination.limitItems)
   products = setDetail.setNewPrice(products)
   res.render('client/pages/products/index.pug', {
+    title: "Danh sách sản phẩm", boxheadTitle: "This is product page!", products: products, keyword: searchTitle.keyword,
+    objectPagination: objectPagination
+  })
+}
+module.exports.getRecentlyProducts = async (req, res) => {
+  let find = {
+    deleted: false,
+    status: 'active'
+  }
+  let searchTitle = searchHelper(req.query)
+  if (searchTitle.title) find['title'] = searchTitle.title
+  const counts = await dataProducts.countDocuments(find);
+  let objectPagination = {
+    currentPage: 1,
+    limitItems: 6,
+    totalProduct: counts
+  }
+  paginationHelper(objectPagination, req.query)
+  let products = await dataProducts.find(find).skip(objectPagination.skipItems).limit(objectPagination.limitItems).sort({"createdBy.createdAt":"desc"})
+  products = setDetail.setNewPrice(products)
+  res.render('client/pages/products/recently-product.pug', {
+    title: "Danh sách sản phẩm", boxheadTitle: "This is product page!", products: products, keyword: searchTitle.keyword,
+    objectPagination: objectPagination
+  })
+}
+module.exports.getFeaturedProducts=async(req,res)=>{
+  let find = {
+    deleted: false,
+    status: 'active',
+    featured:"1"
+  }
+  let searchTitle = searchHelper(req.query)
+  if (searchTitle.title) find['title'] = searchTitle.title
+  const counts = await dataProducts.countDocuments(find);
+  let objectPagination = {
+    currentPage: 1,
+    limitItems: 6,
+    totalProduct: counts
+  }
+  paginationHelper(objectPagination, req.query)
+  let products = await dataProducts.find(find).skip(objectPagination.skipItems).limit(objectPagination.limitItems)
+  products = setDetail.setNewPrice(products)
+  res.render('client/pages/products/recently-product.pug', {
+    title: "Danh sách sản phẩm", boxheadTitle: "This is product page!", products: products, keyword: searchTitle.keyword,
+    objectPagination: objectPagination
+  })
+}
+module.exports.getBestSaleProducts=async(req,res)=>{
+  let find = {
+    deleted: false,
+    status: 'active',
+  }
+  let searchTitle = searchHelper(req.query)
+  if (searchTitle.title) find['title'] = searchTitle.title
+  const counts = await dataProducts.countDocuments(find);
+  let objectPagination = {
+    currentPage: 1,
+    limitItems: 6,
+    totalProduct: counts
+  }
+  paginationHelper(objectPagination, req.query)
+  let products = await dataProducts.find(find).skip(objectPagination.skipItems).limit(objectPagination.limitItems).sort({discountPercentage:"desc"})
+  products = setDetail.setNewPrice(products)
+  res.render('client/pages/products/recently-product.pug', {
     title: "Danh sách sản phẩm", boxheadTitle: "This is product page!", products: products, keyword: searchTitle.keyword,
     objectPagination: objectPagination
   })

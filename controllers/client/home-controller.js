@@ -12,7 +12,9 @@ module.exports.index = async (req, res) => {
   }
   let featuredProducts=await dataProducts.find(findFeatured);
   let recentlyProducts=await dataProducts.find(findRecently).sort({position:"desc"}).limit(6);
+  let bestSaleProducts=await dataProducts.find(findRecently).sort({discountPercentage:"desc"}).limit(6)
   featuredProducts=setDetail.setNewPrice(featuredProducts)
   recentlyProducts=setDetail.setNewPrice(recentlyProducts)
-  res.render('client/pages/home/index.pug', { title: "Home", featuredProducts:featuredProducts, recentlyProducts:recentlyProducts})
+  bestSaleProducts=setDetail.setNewPrice(bestSaleProducts)
+  res.render('client/pages/home/index.pug', { title: "Home", featuredProducts:featuredProducts, recentlyProducts:recentlyProducts, bestSaleProducts:bestSaleProducts})
 } 

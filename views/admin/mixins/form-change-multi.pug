@@ -1,4 +1,4 @@
-mixin form-change-multi(path,recoveryPath)
+mixin form-change-multi(path)
     form(
             action=path
             method="POST"
@@ -10,7 +10,7 @@ mixin form-change-multi(path,recoveryPath)
                     option(value="" disabled selected) --Chọn hành động--
                     option(value="active") Hoạt động
                     option(value="inactive") Dừng hoạt động
-                    option(value="delete-all") Xóa sản phẩm
+                    option(value="delete-multi") Xóa sản phẩm
                     option(value="change-position") Sắp xếp vị trí
             .form-group
                 input(
@@ -20,4 +20,29 @@ mixin form-change-multi(path,recoveryPath)
                     class="form-control d-none"
                 )
             button(type="submit" class="btn btn-primary") Áp dụng
-            button(id="recovery" type="button" class="btn btn-success" data-path=recoveryPath) Khôi phục All
+mixin form-change-multi-bin(path,recoveryPath)
+    form(
+            action=path
+            method="POST"
+            form-change-multi
+        )
+        .d-flex.align-items-start
+            .form-group
+                select(name="type" class="form-control")
+                    option(value="" disabled selected) --Chọn hành động--
+                    option(value="delete-multi") Xóa sản phẩm
+                    option(value="recovery-multi") Khôi phục
+            .form-group
+                input(
+                    type="text"
+                    name="ids"
+                    value=""
+                    class="form-control d-none"
+                )
+            button(type="submit" class="btn btn-primary") Áp dụng
+            button(id="recovery-all" type="button" class="btn btn-success" ) Khôi phục All
+    form(
+      action=recoveryPath
+      method="POST"
+      id="form-recovery-all"
+    )

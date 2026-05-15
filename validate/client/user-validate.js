@@ -81,5 +81,19 @@ module.exports.checkEditUser = (req, res, next) => {
     res.redirect(req.headers.referer)
     return;
   }
+  if (req.body.password){
+    if(!req.body.confirmPassword){
+      req.flash('error', 'Vui lòng xác nhận mật khẩu!')
+      req.flash('oldData', req.body);
+      res.redirect(req.headers.referer)
+      return;
+    }
+    if(req.body.password.toString()!==req.body.confirmPassword.toString()){
+      req.flash('error', "Mật khẩu xác nhận không khớp!")
+      req.flash('oldData', req.body);
+      res.redirect(req.headers.referer);
+      return;
+    }
+  }
   next()
 }
