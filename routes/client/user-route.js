@@ -7,8 +7,8 @@ const uploadCloud = require('../../middlewares/client/fileupload-middleware')
 const multer = require('multer')
 const upload = multer();
 
-router.get('/register',  controller.getRegister)
-router.post('/check-register',  validate.checkRegister, controller.checkRegister)
+router.get('/register', controller.getRegister)
+router.post('/check-register', validate.checkRegister, controller.checkRegister)
 router.get('/login', controller.getLogin)
 router.post('/login', validate.checkLogin, controller.postLogin)
 router.get('/logout', controller.getLogout)

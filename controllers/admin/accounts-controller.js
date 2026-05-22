@@ -18,7 +18,8 @@ module.exports.index = async (req, res) => {
         deleted: false,
         _id: role_id
       })
-      record.role = role.title
+      if (role) record.role = role.title
+      else record.role= "<b><i>Chưa phân quyền</i></b>"
     }
     else {
       record.role = "<b><i>Chưa phân quyền</i></b>"

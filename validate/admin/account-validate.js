@@ -19,7 +19,7 @@ module.exports.createAccount = (req, res, next) => {
     res.redirect(req.headers.referer)
     return;
   }
-  if(req.body.password.length<6){
+  if (req.body.password.length < 6) {
     req.flash('error', 'Mật khẩu phải ít nhất 6 ký tự!')
     req.flash('oldData', req.body)
     res.redirect(req.headers.referer)
@@ -39,7 +39,12 @@ module.exports.patchAccount = (req, res, next) => {
     res.redirect(req.headers.referer)
     return;
   }
-  if(req.body.password && req.body.password.length<6){
+  if (!req.body.password) {
+    req.flash('error', 'Mật khẩu không được để trống!')
+    res.redirect(req.headers.referer)
+    return;
+  }
+  if (req.body.password && req.body.password.length < 6) {
     req.flash('error', 'Mật khẩu phải ít nhất 6 ký tự!')
     res.redirect(req.headers.referer)
     return;

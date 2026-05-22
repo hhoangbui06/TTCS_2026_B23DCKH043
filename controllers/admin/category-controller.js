@@ -59,11 +59,6 @@ module.exports.deleteCategory = async (req, res) => {
     req.flash('success', "Đã xóa thành công danh mục!")
     res.redirect(req.headers.referer)
 }
-module.exports.recoveryAll = async (req, res) => {
-    await data.updateMany({}, { deleted: false })
-    req.flash('success', "Đã khôi phục toàn bộ danh mục!")
-    res.redirect(req.headers.referer)
-}
 module.exports.detailCategory = async (req, res) => {
     let id = req.params.id;
     let category = await data.findOne({ _id: id })
