@@ -137,5 +137,5 @@ module.exports.categoryProducts = async (req, res) => {
     product_category_id: { $in: allSubCategoryId }
   }).skip(objectPagination.skipItems).limit(objectPagination.limitItems)
   categoryProducts = setDetail.setNewPrice(categoryProducts)
-  res.render('client/pages/products/index.pug', { title: category.title, products: products, objectPagination: objectPagination })
+  res.render('client/pages/products/index.pug', { title: category.title, products: categoryProducts, objectPagination: objectPagination })
 }
